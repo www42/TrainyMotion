@@ -13,8 +13,6 @@ az deployment sub create \
     --location $location \
     --parameters rgName=$rgName
 
-# TODO
-#   NVA Nic enable ip forwarding
 
 az deployment sub list \
     --query "reverse(sort_by([].{Name:name,provisioningState:properties.provisioningState,timestamp:properties.timestamp,duration:properties.duration}, &timestamp))" --output table

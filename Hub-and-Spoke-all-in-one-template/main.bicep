@@ -24,10 +24,10 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-01-01' = {
 module hubAndSpokeDeploy 'HubAndSpoke.bicep' = {
   name: 'hubAndSpokeDeploy'
   scope: rg
-  // params: {
-  //   aaId:             automationDeploy.outputs.automationAccountId
-  //   aaConfiguration: 'ADDomain_NewForest.localhost' 
-  // }
+  params: {
+    // aaId:             automationDeploy.outputs.automationAccountId
+    // aaConfiguration: 'ADDomain_NewForest.localhost' 
+  }
 }
 
 // TO DO
