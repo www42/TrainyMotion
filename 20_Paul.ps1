@@ -2,22 +2,27 @@
 # Paul --> Global Administrator tenant
 # Paul --> Owner subscription
 
-$DomainName = ((Get-AzureAdTenantDetail).VerifiedDomains)[0].Name
+$Domains = (Get-AzureAdTenantDetail).VerifiedDomains
+$Domains | Format-Table Name,Initial,_Default
+
+$Domain = $Domains | Where-Object Initial -EQ $true | Select-Object -ExpandProperty Name
 
 $PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
 $PasswordProfile.Password = 'Pa55w.rd1234'
 
-New-AzureADUser `
-    -DisplayName 'Paul' `
-    -UserPrincipalName "Paul@$DomainName" `
-    -MailNickName 'Paul' `
-    -UsageLocation 'DE' `
-    -PasswordProfile $PasswordProfile `
-    -AccountEnabled $true
+$Params = @{
+    DisplayName       = 'Paul'
+    UserPrincipalName = "Paul@$Domain"
+    MailNickName      = 'Paul'
+    ULsageocation     = 'DE'
+    PasswordProfile   = $PasswordProfile
+    AccountEnabled    = $true
+}
+New-AzureADUser @Params
 
-$Paul = Get-AzureADUser -ObjectId "Paul@$DomainName"
+$Paul = Get-AzureADUser -ObjectId "Paul@$Domain"
 
-#Remove-AzureADUser -ObjectId "Paul@$DomainName"
+#Remove-AzureADUser -ObjectId "Paul@$Domain"
 
 # Tenant role Global Administrator
 $GlobalAdministrator = Get-AzureADDirectoryRole | Where-Object DisplayName -eq 'Global Administrator'
