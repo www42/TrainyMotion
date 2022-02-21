@@ -50,7 +50,22 @@ Set-AzureADDomain -Name $Domain -IsDefault $true
 Get-AzureADDomain | Format-Table Name, IsVerified, IsDefault
 
 # Azure AD - set initial domain primary (in order to delete custom domain)
-Get-AzureADDomain | Where-Object IsInitial -eq $true | Set-AzureADDomain -IsDefault $true
+Get-AzureADDomain | Format-Table Name, IsVerified, IsDefault
+$InitialDomain = (Get-AzureADDomain | Where-Object IsInitial -eq $true).Name
+$InitialDomain | Set-AzureADDomain -IsDefault $true
+
+# Get all objects referencing to custom domain
+Get-AzureADDomainNameReference -Name $Domain
+
+# List all Global Administrators
+$GlobalAdministrator = Get-AzureADDirectoryRole | Where-Object DisplayName -eq 'Global Administrator'
+Get-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId
+
+# Dirty: Rename user's UPN to initial domain name
+Get-AzureADDomainNameReference -Name $Domain | ForEach-Object {
+    $Name = $_.DisplayName
+    Set-AzureADUser -ObjectId $_.ObjectId -UserPrincipalName "$Name@$InitialDomain"
+}
 
 # Azure AD - custom domain - delete
 Remove-AzureADDomain -Name $Domain
