@@ -1,0 +1,10 @@
+location='westeurope'
+resourceGroupName='LogAnalytics-RG'
+
+az deployment sub create \
+    --template-file main.bicep \
+    --location $location \
+    --parameters resourceGroupName=$resourceGroupName
+
+az deployment sub list \
+    --query "reverse(sort_by([].{Name:name,provisioningState:properties.provisioningState,timestamp:properties.timestamp,duration:properties.duration}, &timestamp))" --output table
