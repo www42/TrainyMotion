@@ -1,6 +1,6 @@
 # GoDaddy - my account
-$ApiKey    = 'dKsquMdGAehR_KRosZCvgHCRZg65QW9a5yD'
-$ApiSecret = '7VWHUYpBcVbNDqqWiEe3mx'
+$ApiKey    = 'xxx'
+$ApiSecret = 'yyy'
 
 $GoDaddy = 'https://api.godaddy.com/v1/domains'
 $Headers = @{Authorization = "sso-key $($ApiKey):$($ApiSecret)"}
