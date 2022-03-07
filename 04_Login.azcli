@@ -3,3 +3,6 @@ az logout
 
 az account list --all --query "[].{Subscription:id,Name:name,User:user.name,isDefault:isDefault}" --output table
 az account show
+
+subscriptionId='6d8a949f-78ab-45f4-909a-1a97c83b5735'
+az account set --subscription $subscriptionId
