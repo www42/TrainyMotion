@@ -20,7 +20,8 @@ Import-Module -Name AzureAD
 
 ##       Windows: PowerShell 7
 Get-Module -ListAvailable -Name AzureAD
-Import-Module -Name AzureAD -UseWindowsPowerShell
+# Import-Module -Name AzureAD -SkipEditionCheck     # Does not work!
+Import-Module -Name AzureAD -UseWindowsPowerShell   # Warning: ... please note that all input and output of commands from this module will be deserialized objects
 
 ##       MacOs: PowerShell 7
 Get-Module -ListAvailable -Name AzureAD.Standard.Preview

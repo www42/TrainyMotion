@@ -8,13 +8,14 @@ $Domains | Format-Table Name,Initial,_Default
 $Domain = $Domains | Where-Object Initial -EQ $true | Select-Object -ExpandProperty Name
 
 $PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
-$PasswordProfile.Password = 'Pa55w.rd1234'
+$PasswordProfile.Password = 'xxxxxxxxxxxxxx'
+$PasswordProfile.ForceChangePasswordNextLogin = $false
 
 $Params = @{
     DisplayName       = 'Paul'
     UserPrincipalName = "Paul@$Domain"
     MailNickName      = 'Paul'
-    ULsageocation     = 'DE'
+    UsageLocation     = 'DE'
     PasswordProfile   = $PasswordProfile
     AccountEnabled    = $true
 }

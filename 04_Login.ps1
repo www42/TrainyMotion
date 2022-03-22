@@ -1,4 +1,5 @@
 # Azure login
+Logout-AzAccount
 Login-AzAccount
 Get-AzContext | Format-List Name,Account,Tenant,Subscription
 Get-AzSubscription
