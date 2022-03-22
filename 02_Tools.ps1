@@ -7,6 +7,7 @@ Get-PackageSource
 Find-Module -Name Az -Repository PSGallery
 
 #       MacOS: bash -> sudo pwsh -> exit
+#       Windows: Run as Administrator -> Windows Terminal
 Find-Module -Name Az -Repository PSGallery | Update-Module -Scope AllUsers -Force
 
 

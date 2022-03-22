@@ -1,0 +1,7 @@
+# Azure CLI - version
+az version
+
+# Azure CLI - update
+#     Windows WSL Bash
+sudo apt-get update
+sudo apt-get upgrade
