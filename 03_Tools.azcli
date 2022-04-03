@@ -1,7 +1,20 @@
 # Azure CLI - version
 az version
+az --version
 
-# Azure CLI - update
-#     Windows WSL Bash
+# Azure CLI - upgrade
+#     Windows: WSL Bash
 sudo apt-get update
 sudo apt-get upgrade
+
+#     MacOs: Bash
+brew update
+brew upgrade
+
+
+
+# Bicep - version
+az bicep version
+
+# Bicep - upgrade
+az bicep upgrade

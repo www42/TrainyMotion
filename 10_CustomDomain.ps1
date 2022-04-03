@@ -39,6 +39,7 @@ $Params = @{
     Uri = "$GoDaddy/$Domain/records"
     ContentType = "application/json"
 }
+
 Invoke-RestMethod @Params
 
 # Azure AD - custom domain - verify
@@ -48,6 +49,15 @@ Get-AzureADDomain | Format-Table Name, IsVerified, IsDefault
 # Azure AD - custom domain - set primary
 Set-AzureADDomain -Name $Domain -IsDefault $true
 Get-AzureADDomain | Format-Table Name, IsVerified, IsDefault
+
+# Azure AD - custom domain - set display name
+Get-AzureADTenantDetail | Format-List ObjectId,DisplayName,VerifiedDomains
+# ???
+
+
+# ==============================================================
+#                  Remove custom domain
+# ==============================================================
 
 # Azure AD - set initial domain primary (in order to delete custom domain)
 Get-AzureADDomain | Format-Table Name, IsVerified, IsDefault

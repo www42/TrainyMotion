@@ -3,7 +3,7 @@ Logout-AzAccount
 Login-AzAccount
 Get-AzContext | Format-List Name,Account,Tenant,Subscription
 Get-AzSubscription
-$Subscription = Get-AzSubscription | Where-Object State -EQ 'enabled' | Select-Object -ExpandProperty SubscriptionId
+$Subscription = Get-AzSubscription | Where-Object State -EQ 'enabled' | % SubscriptionId
 
 
 # Azure AD login

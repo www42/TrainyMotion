@@ -62,10 +62,13 @@ function Import-TmAzureADUser {
     param (
         [Parameter(Mandatory=$false)]
         [string]
-        $Path = "$PSScriptRoot/TmAzureADUsers.csv"
+        $Path = "$PSScriptRoot/TmAzureADUsers.csv",
+    
+        [Parameter(Mandatory=$true)]
+        [string]
+        $DomainName    
     )
     $Users = Import-Csv -Path $Path
-    $DomainName = ((Get-AzureAdTenantDetail).VerifiedDomains)[0].Name
     $PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
     $PasswordProfile.Password = 'Pa55w.rd1234'
 
@@ -116,10 +119,13 @@ function Remove-TmImportedAzureADUser {
     param (
         [Parameter(Mandatory=$false)]
         [string]
-        $Path = "$PSScriptRoot/TmAzureADUsers.csv"
+        $Path = "$PSScriptRoot/TmAzureADUsers.csv",
+    
+        [Parameter(Mandatory=$true)]
+        [string]
+        $DomainName
     )
     $Users = Import-Csv -Path $Path
-    $DomainName = ((Get-AzureAdTenantDetail).VerifiedDomains)[0].Name
 
     foreach ($User in $Users) {
         $GivenName         = $User.GivenName

@@ -5,7 +5,8 @@
 $Domains = (Get-AzureAdTenantDetail).VerifiedDomains
 $Domains | Format-Table Name,Initial,_Default
 
-$Domain = $Domains | Where-Object Initial -EQ $true | Select-Object -ExpandProperty Name
+# $Domain = $Domains | Where-Object Initial -EQ $true | Select-Object -ExpandProperty Name
+$Domain = 'trainymotion.com'
 
 $PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
 $PasswordProfile.Password = 'xxxxxxxxxxxxxx'

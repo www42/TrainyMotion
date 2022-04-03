@@ -1,21 +1,22 @@
-Import-Module -Name AzureAD                     # on WindowsPowershell
-Import-Module -Name AzureAD.Standard.Preview    # on PowerShell 7
-
-Connect-AzureAD
+# Connected to domain?
 Get-AzureADDomain
 
-Import-Module -Name ./Tm/Tm.psd1 -Force
+# Import module
+Import-Module -Name ./Tenant/Tm/Tm.psd1 -Force
 Get-Module -Name Tm
 
 # Users
 Get-AzureADUser
-Import-TmAzureADUser
-Remove-TmImportedAzureADUser
+
+# $DomainName = ((Get-AzureAdTenantDetail).VerifiedDomains)[0].Name
+$DomainName = 'trainymotion.com'
+Import-TmAzureADUser -DomainName $DomainName
+# Remove-TmImportedAzureADUser -DomainName $DomainName
 
 # Groups
 Get-AzureADGroup
 Import-TmAzureADGroup
-Remove-TmImportedAzureADGroup
+# Remove-TmImportedAzureADGroup
 
 # Group membership
 $GroupName = "Quantum Electodynamics"
@@ -23,7 +24,7 @@ Get-AzureADGroupMember -ObjectId (Get-AzureADGroup -Filter "DisplayName eq '$Gro
 
 # Third level groups
 Add-TmAzureADGroupMember -MemberName "Peter Higgs"             -GroupName "Gauge Fields Symmetry"
-Add-TmAzureADGroupMember -MemberName "François Englert"        -GroupName "Gauge Fields Symmetry" -verbose
+Add-TmAzureADGroupMember -MemberName "François Englert"        -GroupName "Gauge Fields Symmetry"
 Add-TmAzureADGroupMember -MemberName "Sheldon Glashow"         -GroupName "Electoweak Interactions"
 Add-TmAzureADGroupMember -MemberName "Abdus Salam"             -GroupName "Electoweak Interactions"
 Add-TmAzureADGroupMember -MemberName "Steven Weinberg"         -GroupName "Electoweak Interactions"
@@ -33,7 +34,7 @@ Add-TmAzureADGroupMember -MemberName "Walter Brattain"         -GroupName "Semic
 
 # Second level groups
 Add-TmAzureADGroupMember -MemberName "Ernst Mach"              -GroupName "General Relativity"
-Add-TmAzureADGroupMember -MemberName "Erwin Schrödinger"       -GroupName "Quantum Mechanics" -verbose
+Add-TmAzureADGroupMember -MemberName "Erwin Schrödinger"       -GroupName "Quantum Mechanics"
 Add-TmAzureADGroupMember -MemberName "Max Planck"              -GroupName "Quantum Mechanics"
 Add-TmAzureADGroupMember -MemberName "Niels Bohr"              -GroupName "Quantum Mechanics"
 Add-TmAzureADGroupMember -MemberName "Wolfgang Pauli"          -GroupName "Quantum Mechanics"
