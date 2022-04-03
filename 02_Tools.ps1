@@ -6,7 +6,7 @@ Get-Module -ListAvailable -Name Az
 Get-PackageSource
 Find-Module -Name Az -Repository PSGallery
 
-#       MacOS: bash -> sudo pwsh -> exit
+#       MacOS: bash -> sudo pwsh -> update module -> exit
 #       Windows: Run as Administrator -> Windows Terminal
 Find-Module -Name Az -Repository PSGallery | Update-Module -Scope AllUsers -Force
 
@@ -14,7 +14,7 @@ Find-Module -Name Az -Repository PSGallery | Update-Module -Scope AllUsers -Forc
 # Azure AD module
 # ---------------
 
-##       Windows PowerShell
+##       Windows: Windows PowerShell
 Get-Module -ListAvailable -Name AzureAD
 Import-Module -Name AzureAD
 
@@ -30,8 +30,8 @@ Import-Module -Name AzureAD.Standard.Preview
 
 # Azure AD module - update
 
-##       Windows PowerShell
+##       Windows: Windows PowerShell
 ##       Windows: PowerShell 7
-##       MacOs: PowerShell 7
+##       MacOs:   PowerShell 7
 # Vorsicht! Nimm nur die Version, die auch in der CloudShell installiert ist.
 Find-Module -Name AzureAD.Standard.Preview -Repository PoshTestGallery -AllVersions
