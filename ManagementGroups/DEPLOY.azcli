@@ -1,0 +1,14 @@
+root='e10e2bf1-ff26-4b39-8819-ac67fa432631'
+mgDisplayName='MG-Test'
+
+az deployment mg create \
+    --management-group-id $root \
+    --name demoMgDeployment \
+    --location westeurope \
+    --template-file main.bicep \
+    --parameters mgDisplayName=$mgDisplayName
+
+az deployment mg list --management-group-id $root \
+    --query "reverse(sort_by([].{Name:name,provisioningState:properties.provisioningState,timestamp:properties.timestamp,duration:properties.duration}, &timestamp))" --output table
+
+az account management-group list --query "[].{displayName:displayName,name:name}" --output table
