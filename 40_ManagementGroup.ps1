@@ -46,6 +46,7 @@ Get-AzRoleDefinition -Name "Hierarchy Settings Administrator"
 Get-AzRoleAssignment | Where-Object Scope -eq "/"
 New-AzRoleAssignment -SignInName "Paul@trainymotion.com" -Scope "/" -RoleDefinitionName "Hierarchy Settings Administrator"
 
+Remove-AzRoleAssignment -SignInName "Paul@trainymotion.com" -Scope "/" -RoleDefinitionName "Hierarchy Settings Administrator"
 
 
 
