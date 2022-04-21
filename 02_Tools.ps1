@@ -15,7 +15,7 @@ Find-Module -Name Az -Repository PSGallery | Update-Module -Scope AllUsers -Forc
 # ---------------
 
 ##       Windows: Windows PowerShell
-Get-Module -ListAvailable -Name AzureAD
+Get-Module -Name AzureAD -ListAvailable
 Import-Module -Name AzureAD
 
 ##       Windows: PowerShell 7
