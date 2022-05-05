@@ -1,6 +1,9 @@
+# Requires -Version 7
+$PSVersionTable
+
 # GoDaddy - my account
-$ApiKey    = 'xxx'
-$ApiSecret = 'yyy'
+$ApiKey    = 'dKsquMdGAehR_LghftpWckQ4ntFvAA8hCok'
+$ApiSecret = 'JNm3rGtUzovTuiPcZ1gXyT'
 
 $GoDaddy = 'https://api.godaddy.com/v1/domains'
 $Headers = @{Authorization = "sso-key $($ApiKey):$($ApiSecret)"}
@@ -25,6 +28,8 @@ Invoke-RestMethod -Method GET -Headers $Headers -Uri "$GoDaddy/$Domain/records/T
 Invoke-RestMethod -Method DELETE -Headers $Headers -Uri "$GoDaddy/$Domain/records/TXT/@"
 
 # GoDaddy - custom domain - create DNS verification TXT record
+#
+# In Windows PowerShell gibt es bei ConvertTo-Json kein Parameter -AsArray    :-(
 $Body = @{
     name = "@"
     data = "$($VerificationDnsRecord.Text)"

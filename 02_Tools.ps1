@@ -19,9 +19,8 @@ Get-Module -Name AzureAD -ListAvailable
 Import-Module -Name AzureAD
 
 ##       Windows: PowerShell 7
-Get-Module -ListAvailable -Name AzureAD
-# Import-Module -Name AzureAD -SkipEditionCheck     # Does not work!
-Import-Module -Name AzureAD -UseWindowsPowerShell   # Warning: ... please note that all input and output of commands from this module will be deserialized objects
+# Man kann das Modul zwar installieren und auch importieren, aber es funktioniert dann doch nicht.
+# Connect-AzureAD  funktioniert nicht
 
 ##       MacOs: PowerShell 7
 Get-Module -ListAvailable -Name AzureAD.Standard.Preview
@@ -31,12 +30,11 @@ Import-Module -Name AzureAD.Standard.Preview
 # Azure AD module - update
 
 ##       Windows: Windows PowerShell
+Find-Module -Name AzureAD
 ##       Windows: PowerShell 7
 ##       MacOs:   PowerShell 7
 # Vorsicht! Nimm nur die Version, die auch in der CloudShell installiert ist.
 Find-Module -Name AzureAD.Standard.Preview -Repository PoshTestGallery -AllVersions
-
-
 
 
 # ------------------------------------------------------------------------------------------

@@ -7,6 +7,9 @@ az --version
 sudo apt-get update
 sudo apt-get upgrade
 
+#     Windows: PowerShell 7
+az upgrade
+
 #     MacOs: Bash
 brew update
 brew upgrade
