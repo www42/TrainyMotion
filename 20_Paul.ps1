@@ -30,7 +30,7 @@ $Paul = Get-AzureADUser -ObjectId "Paul@$Domain"
 
 # Tenant role Global Administrator
 $GlobalAdministrator = Get-AzureADDirectoryRole | Where-Object DisplayName -eq 'Global Administrator'
-Add-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId -RefObjectId $Paul.ObjectId
+Add-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId -RefObjectId $Paul.ObjectId    # does not work on Windows PS 7
 Get-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId
 
 # Remove-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId -MemberId $Paul.ObjectId
