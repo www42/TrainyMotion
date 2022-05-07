@@ -1,4 +1,5 @@
 # Requires -Version 7
+# --------------------
 $PSVersionTable
 
 # GoDaddy - my account
@@ -29,7 +30,6 @@ Invoke-RestMethod -Method DELETE -Headers $Headers -Uri "$GoDaddy/$Domain/record
 
 # GoDaddy - custom domain - create DNS verification TXT record
 #
-# In Windows PowerShell gibt es bei ConvertTo-Json kein Parameter -AsArray    :-(
 $Body = @{
     name = "@"
     data = "$($VerificationDnsRecord.Text)"
@@ -46,6 +46,9 @@ $Params = @{
 }
 
 Invoke-RestMethod @Params
+
+# Das Internet ....
+Resolve-DnsName -Name $Domain -Type TXT 
 
 # Azure AD - custom domain - verify
 Confirm-AzureADDomain -Name $Domain

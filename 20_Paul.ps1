@@ -1,6 +1,8 @@
-# Paul - admin account for daily work (Don't use the Account Admin for daily work.)
-# Paul --> Global Administrator tenant
-# Paul --> Owner subscription
+# Paul - Admin account for daily work
+# (Don't use the Account Admin for daily work.)
+# -------------------------------------------------------------------------
+# Paul --> Global Administrator --> Tenant
+# Paul --> Owner                --> Subscription
 
 $Domains = (Get-AzureAdTenantDetail).VerifiedDomains
 $Domains | Format-Table Name,Initial,_Default
