@@ -1,23 +1,16 @@
-# Azure CLI - version
-az version
+# Azure CLI
 az --version
+az version
+az upgrade
 
-# Azure CLI - upgrade
-#     Windows: WSL Bash
+az bicep version
+az bicep upgrade
+
+#  Windows: WSL Bash
 sudo apt-get update
 sudo apt-get upgrade
 
-#     Windows: PowerShell 7
-az upgrade
 
-#     MacOs: Bash
+#  MacOs: Bash
 brew update
 brew upgrade
-
-
-
-# Bicep - version
-az bicep version
-
-# Bicep - upgrade
-az bicep upgrade

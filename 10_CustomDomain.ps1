@@ -2,8 +2,8 @@
 $PSVersionTable
 
 # GoDaddy - my account
-$ApiKey    = 'dKsquMdGAehR_LghftpWckQ4ntFvAA8hCok'
-$ApiSecret = 'JNm3rGtUzovTuiPcZ1gXyT'
+$ApiKey    = 'xxx'
+$ApiSecret = 'yyy'
 
 $GoDaddy = 'https://api.godaddy.com/v1/domains'
 $Headers = @{Authorization = "sso-key $($ApiKey):$($ApiSecret)"}
