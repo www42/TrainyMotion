@@ -2,6 +2,7 @@
 # -----------
 az account clear
 az login
+az login --use-device-code
 
 az account list --all --query "[].{Subscription:id,Name:name,User:user.name,isDefault:isDefault}" --output table
 az account show
