@@ -7,7 +7,7 @@ Find-Module -Name Az -Repository PSGallery
 #  Windows: Run as Administrator -> Windows Terminal
 Find-Module -Name Az -Repository PSGallery | Update-Module -Scope AllUsers -Force
 
-
+Uninstall-Module -Name Az -RequiredVersion 7.2.1
 
 
 # Azure AD module
