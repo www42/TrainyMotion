@@ -45,7 +45,6 @@ Add-TmAzureADGroupMember -MemberName "Eugene Wigner"           -GroupName "Quant
 Add-TmAzureADGroupMember -MemberName "Hans Bethe"              -GroupName "Quantum Mechanics"
 Add-TmAzureADGroupMember -MemberName "Murray Gell-Mann"        -GroupName "Quantum Chromodynamics"
 Add-TmAzureADGroupMember -MemberName "Julian Schwinger"        -GroupName "Quantum Electodynamics"
-Add-TmAzureADGroupMember -MemberName "Paul Dirac"              -GroupName "Quantum Electodynamics"
 Add-TmAzureADGroupMember -MemberName "Gauge Fields Symmetry"   -GroupName "Quantum Electodynamics"
 Add-TmAzureADGroupMember -MemberName "Electoweak Interactions" -GroupName "Quantum Electodynamics"
 Add-TmAzureADGroupMember -MemberName "Semiconductor Devices"   -GroupName "Solid State Physics"
