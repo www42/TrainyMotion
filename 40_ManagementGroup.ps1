@@ -1,6 +1,14 @@
-# User Access Administrator (UAA)
-# -------------------------------
+# ----------------------------------------
+# Two steps
+#   1) Self elevate to UAA
+#   2) Assign role HSA at root scope 
+#
+#   UAA = User Access Administrator 
+#   HSA = Hierarchy Settings Administrator
+# ----------------------------------------
 
+# Step 1)
+# -------
 # List Global Administrators - only a Global Administrator can self elevate to UAA
 $GlobalAdministrator = Get-AzureADDirectoryRole | Where-Object DisplayName -eq 'Global Administrator'
 Get-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId
@@ -58,7 +66,7 @@ New-AzRoleAssignment -SignInName "Paul@trainymotion.com" -Scope "/" -RoleDefinit
 Get-AzManagementGroup | Format-Table Name,DisplayName,Id
 # "Management Groups are not enabled in this tenant." --> Ignore
 
-# Enterprise
+# Enterprise level
 New-AzManagementGroup -DisplayName "Trainymotion" -GroupName (New-Guid)
 $EnterpriseMgId = Get-AzManagementGroup | Where-Object DisplayName -EQ "Trainymotion" | % Name
 
@@ -84,29 +92,39 @@ foreach ($Name in $SecondLevelManagementGroups) {
     -GroupName (New-Guid) `
     -ParentId "/providers/Microsoft.Management/managementGroups/$ProductionMgId"
 }
-$WestMgId = Get-AzManagementGroup | Where-Object DisplayName -EQ "West" | % Name
+$EastMgId    = Get-AzManagementGroup | Where-Object DisplayName -EQ "East"    | % Name
+$WestMgId    = Get-AzManagementGroup | Where-Object DisplayName -EQ "West"    | % Name
+$CentralMgId = Get-AzManagementGroup | Where-Object DisplayName -EQ "Central" | % Name
 
 
 # Add subscription to management group
 $Subscription = Get-AzSubscription | Where-Object State -EQ 'enabled' | % SubscriptionId
-New-AzManagementGroupSubscription -SubscriptionId $Subscription -GroupName $WestMgId
+New-AzManagementGroupSubscription -SubscriptionId $Subscription -GroupName $CentralMgId
 
 
 # Clean up role assignments
 # -------------------------
+Get-AzManagementGroup | Format-Table DisplayName,Name
+
 Get-AzRoleAssignment | Sort-Object Scope | Format-Table DisplayName,RoleDefinitionName,Scope
 
-# Remove Paul--Owner--West
+# Remove Paul -- Owner -- East|West|Central
+Remove-AzRoleAssignment -SignInName "Paul@trainymotion.com" -RoleDefinitionName "Owner" -Scope "/providers/Microsoft.Management/managementGroups/$EastMgId"
 Remove-AzRoleAssignment -SignInName "Paul@trainymotion.com" -RoleDefinitionName "Owner" -Scope "/providers/Microsoft.Management/managementGroups/$WestMgId"
-# Remove Paul--Owner--Production
+Remove-AzRoleAssignment -SignInName "Paul@trainymotion.com" -RoleDefinitionName "Owner" -Scope "/providers/Microsoft.Management/managementGroups/$CentralMgId"
+
+# Remove Paul -- Owner -- Production|Testing|Development
 Remove-AzRoleAssignment -SignInName "Paul@trainymotion.com" -RoleDefinitionName "Owner" -Scope "/providers/Microsoft.Management/managementGroups/$ProductionMgId"
-# Remove Paul--Owner--Subscription
-Remove-AzRoleAssignment -SignInName "Paul@trainymotion.com" -RoleDefinitionName "Owner" -Scope "/subscriptions/$Subscription"
-# Remove Paul--HierarchySettingsAdministrator--Root
-Remove-AzRoleAssignment -SignInName "Paul@trainymotion.com" -RoleDefinitionName "Hierarchy Settings Administrator" -Scope "/"
+Remove-AzRoleAssignment -SignInName "Paul@trainymotion.com" -RoleDefinitionName "Owner" -Scope "/providers/Microsoft.Management/managementGroups/$TestingMgId"
+Remove-AzRoleAssignment -SignInName "Paul@trainymotion.com" -RoleDefinitionName "Owner" -Scope "/providers/Microsoft.Management/managementGroups/$DevelopmentMgId"
+
+# Remove Paul -- Owner -- Enterprise
+Remove-AzRoleAssignment -SignInName "Paul@trainymotion.com" -RoleDefinitionName "Owner" -Scope "/providers/Microsoft.Management/managementGroups/$EnterpriseMgId"
+
 # Remove Paul--UserAccessAdministrator--Root
 Remove-AzRoleAssignment -SignInName "Paul@trainymotion.com" -RoleDefinitionName "User Access Administrator" -Scope "/"
 
-# Bleibt übrig:  Paul--UserAccessAdministrator--Trainymotion
-$EnterpriseMgId
+# Bleibt übrig:  
+#   Paul -- Hierarchy Settings Administrator -- Root
+#   Paul -- Owner -- Subscription
 Get-AzRoleAssignment | Sort-Object Scope | Format-Table DisplayName,RoleDefinitionName,Scope
