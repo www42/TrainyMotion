@@ -18,7 +18,7 @@ param aaName string = 'Hybrid-Automation'
 param aaModuleName string = 'ActiveDirectoryDsc'
 param aaModuleContentLink string = 'https://psg-prod-eastus.azureedge.net/packages/activedirectorydsc.6.0.1.nupkg'
 param aaConfigurationName string = 'ADDomain_NewForest'
-param aaConfigurationSourceUri string = 'https://raw.githubusercontent.com/www42/ARM/master/DSC/ADDomain_NewForest.ps1'
+param aaConfigurationSourceUri string = 'https://raw.githubusercontent.com/www42/TrainyMotion/master/Hybrid/ADDomain_NewForest.ps1'
 
 var bastionName = '${vnetName}-Bastion'
 var bastionPipName = '${vnetName}-Bastion-Pip'
