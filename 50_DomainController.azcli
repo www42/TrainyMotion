@@ -1,0 +1,34 @@
+# -------------------------------------------------------------------
+# Deployment
+# -------------------------------------------------------------------
+rgName='Hybrid-RG'
+location='westeurope'
+file='Hybrid/hybrid.bicep'
+
+az group create --name $rgName --location $location
+
+az deployment group create \
+    --resource-group $rgName \
+    --template-file $file \
+    --parameters vmSize='Standard_D2as_v5' vmAdminUserName='localadmin' vmAdminPassword='fLA^tta3FZeh4v4K'
+
+
+
+
+# -------------------------------------------------------------------
+# Tests, useful commands, clean up
+# -------------------------------------------------------------------
+az account show
+
+az group list --output table
+
+az deployment group list --resource-group $rgName \
+    --query "reverse(sort_by([].{Name:name,provisioningState:properties.provisioningState,timestamp:properties.timestamp}, &timestamp))" --output table
+
+az resource list --resource-group $rgName --query "sort_by([].{name:name,Type:type,location:location},&Type)" --output table
+
+# Tabula rasa resource group
+az deployment group create --name 'tabulaRasa' --resource-group $rgName --mode Complete --template-uri "https://raw.githubusercontent.com/www42/arm/master/templates/empty.json" --no-wait
+
+# Delete resource group
+az group delete --resource-group $rgName --yes --no-wait

@@ -12,3 +12,4 @@ Here are some script files to create a basic test environment in Azure AD and Az
 | 20_Paul.ps1                 | Create super user Paul for daily use                                   | PowerShell |
 | 30_PopulateTenant.ps1       | Create users and groups                                                | PowerShell |
 | 40_ManagementGroup.ps1      | Create management groups                                               | PowerShell |
+| 45_ExternalUsers.ps1        | Google ID provider                                                     | PowerShell |
