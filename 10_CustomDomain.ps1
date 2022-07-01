@@ -49,6 +49,8 @@ Invoke-RestMethod @Params
 
 # Das Internet ....
 Resolve-DnsName -Name $Domain -Type TXT 
+# MacOS module DnsClient not available
+dig $Domain txt
 
 # Azure AD - custom domain - verify
 Confirm-AzureADDomain -Name $Domain
