@@ -81,7 +81,7 @@ Get-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId
 
 # Dirty: Rename user's UPN to initial domain name
 Get-AzureADDomainNameReference -Name $Domain | ForEach-Object {
-    $Name = $_.DisplayName
+    $Name = $_.UserPrincipalName.split('@')[0]
     Set-AzureADUser -ObjectId $_.ObjectId -UserPrincipalName "$Name@$InitialDomain"
 }
 
