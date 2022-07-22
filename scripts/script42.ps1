@@ -1,6 +1,6 @@
 # Create temp folder
 # (Azure VM custom script extension cannot use user profile as destination, C:\Users\Student does not exist at that time)
-New-Item -ItemType Directory -Path C:\demo -Force
+New-Item -ItemType Directory -Path C:\temp -Force
 
 # Download files for demo "Managed Identity"
 $source1 = 'https://raw.githubusercontent.com/www42/AZ-303-Microsoft-Azure-Architect-Technologies/master/tj/demo-Mi/demo-Mi-Token.ps1'
