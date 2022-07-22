@@ -1,5 +1,5 @@
 file='main.bicep'
-deploymentName='labDeployment-06'
+deploymentName='labDeployment'
 
 location='westeurope'
 rgName='Lab-RG'
