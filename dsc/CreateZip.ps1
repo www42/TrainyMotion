@@ -1,0 +1,1 @@
+Compress-Archive -Path dsc/dsc.ps1 -DestinationPath dsc/dsc.zip -Force

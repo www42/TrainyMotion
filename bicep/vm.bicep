@@ -5,7 +5,9 @@ param vmSize string = 'Standard_D2as_v5'
 param vmAdminUserName string = 'localadmin'
 @secure()
 param vmAdminPassword string
+
 param script string = 'script42.ps1'
+param dsc string = 'config42'
 
 param vnet object
 
@@ -13,10 +15,14 @@ var vmComputerName = vmName
 var vmOsDiskName = '${vmName}-Disk'
 var vmNsgName = '${vmName}-NSG'
 var nicName = '${vmName}-Nic'
-// var scriptUri = 'https://raw.githubusercontent.com/www42/TrainyMotion/master/scripts/${script}'
-var scriptUri = 'https://lab69118.blob.core.windows.net/scripts/${script}'
+
+// Script Extension
+var scriptUri = 'https://github.com/www42/TrainyMotion/raw/master/scripts/${script}'
 var scriptcommand = 'powershell.exe -ExecutionPolicy Unrestricted -File ${script}'
 
+// DSC Extension
+var dscUri = 'https://github.com/www42/Bicep/raw/master/dsc/allConfigs.zip'
+var dscScript = 'dsc.ps1'
 
 resource vm 'Microsoft.Compute/virtualMachines@2021-11-01' = {
   name: vmName
@@ -102,5 +108,27 @@ resource vmScriptExtension 'Microsoft.Compute/virtualMachines/extensions@2021-11
     commandToExecute: scriptcommand
     }
 
+  }
+}
+
+resource vmDscExtension 'Microsoft.Compute/virtualMachines/extensions@2021-11-01' = {
+  name: 'dsc'
+  parent: vm
+  location: location
+  dependsOn: [
+    vmScriptExtension    
+  ]
+  properties: {
+    publisher: 'Microsoft.Powershell'
+    type: 'DSC'
+    typeHandlerVersion: '2.83'
+    autoUpgradeMinorVersion: true
+    settings: {
+      configuration: {
+        function: dsc
+        script: dscScript
+        url: dscUri
+      }      
+    }
   }
 }
