@@ -1,11 +1,13 @@
 targetScope = 'subscription'
 
-param location string
-param rgName string = 'Lab-RG'
-param vmName string = 'VM1'
+param location        string
+param rgName          string
+param vmName          string = 'VM1'
 param vmAdminUserName string = 'localadmin'
 @secure()
 param vmAdminPassword string
+param vmScript        string = 'script42.ps1'
+param vmDsc           string = 'config42'
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: rgName
@@ -38,7 +40,8 @@ module vmDeployment '../bicep/vm.bicep' = {
     vmName: vmName
     vmAdminUserName: vmAdminUserName
     vmAdminPassword: vmAdminPassword
+    script: vmScript
+    dsc: vmDsc
     vnet: networkDeployment.outputs.network
-    script: 'script42.ps1'
   }
 }

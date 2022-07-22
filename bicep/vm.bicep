@@ -1,28 +1,22 @@
 param  location string = resourceGroup().location
 
-param vmName string = 'VM1'
-param vmSize string = 'Standard_D2as_v5'
+param vmName          string = 'VM1'
+param vmSize          string = 'Standard_D2as_v5'
 param vmAdminUserName string = 'localadmin'
 @secure()
 param vmAdminPassword string
-
-param script string = 'script42.ps1'
-param dsc string = 'config42'
-
-param vnet object
+param script          string = 'script42.ps1'
+param dsc             string = 'config42'
+param vnet            object
 
 var vmComputerName = vmName
-var vmOsDiskName = '${vmName}-Disk'
-var vmNsgName = '${vmName}-NSG'
-var nicName = '${vmName}-Nic'
-
-// Script Extension
-var scriptUri = 'https://github.com/www42/TrainyMotion/raw/master/scripts/${script}'
-var scriptcommand = 'powershell.exe -ExecutionPolicy Unrestricted -File ${script}'
-
-// DSC Extension
-var dscUri = 'https://github.com/www42/Bicep/raw/master/dsc/allConfigs.zip'
-var dscScript = 'dsc.ps1'
+var vmOsDiskName   = '${vmName}-Disk'
+var vmNsgName      = '${vmName}-NSG'
+var nicName        = '${vmName}-Nic'
+var scriptUri      = 'https://github.com/www42/TrainyMotion/raw/master/scripts/${script}'
+var scriptcommand  = 'powershell.exe -ExecutionPolicy Unrestricted -File ${script}'
+var dscUri         = 'https://github.com/www42/TrainyMotion/raw/master/dsc/dsc.zip'
+var dscScript      = 'dsc.ps1'
 
 resource vm 'Microsoft.Compute/virtualMachines@2021-11-01' = {
   name: vmName
