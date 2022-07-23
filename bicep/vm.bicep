@@ -126,3 +126,7 @@ resource vmDscExtension 'Microsoft.Compute/virtualMachines/extensions@2021-11-01
     }
   }
 }
+
+output virtualMachine object = vm
+output virtualMachineId string = vm.id
+output virtualMachineName string = vm.name

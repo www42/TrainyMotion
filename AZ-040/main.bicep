@@ -1,3 +1,14 @@
+/*
+Virtual machine for demo use in course AZ-040 "Automating Administration with PowerShell"
+(formerly known as M10961) 
+
+VM      Windows Server 2022
+        user: localadmin
+        connect via bastion
+        custom script
+        dsc configuration
+*/
+
 targetScope = 'subscription'
 
 param location        string
@@ -43,5 +54,15 @@ module vmDeployment '../bicep/vm.bicep' = {
     script: vmScript
     dsc: vmDsc
     vnet: networkDeployment.outputs.network
+  }
+}
+
+module autoShutdown '../bicep/autoShutdown.bicep' = {
+  scope: rg
+  name: 'autoShutdown'
+  params: {
+    location: location
+    vmName: vmDeployment.outputs.virtualMachineName
+    vmId: vmDeployment.outputs.virtualMachineId
   }
 }
