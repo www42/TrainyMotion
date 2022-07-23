@@ -9,20 +9,20 @@ Install-Module -Name ComputerManagementDsc -Force
 New-Item -ItemType Directory -Path C:\temp -Force
 
 # Download files for demo "Managed Identity"
-$source1 = 'https://raw.githubusercontent.com/www42/AZ-303-Microsoft-Azure-Architect-Technologies/master/tj/demo-Mi/demo-Mi-Token.ps1'
-$destination1 =  'C:\temp\demo-Mi-Token.ps1'
-Invoke-WebRequest -Uri $source1 -OutFile $destination1
+$source = 'https://raw.githubusercontent.com/www42/AZ-303-Microsoft-Azure-Architect-Technologies/master/tj/demo-Mi/demo-Mi-Token.ps1'
+$destination =  'C:\temp\demo-Mi-Token.ps1'
+Invoke-WebRequest -Uri $source -OutFile $destination
 
-$source2 = 'https://raw.githubusercontent.com/www42/AZ-303-Microsoft-Azure-Architect-Technologies/master/tj/demo-Mi/demo-Mi-AzContext.ps1'
-$destination2 =  'C:\temp\demo-Mi-AzContext.ps1'
-Invoke-WebRequest -Uri $source2 -OutFile $destination2
+$source = 'https://raw.githubusercontent.com/www42/AZ-303-Microsoft-Azure-Architect-Technologies/master/tj/demo-Mi/demo-Mi-AzContext.ps1'
+$destination =  'C:\temp\demo-Mi-AzContext.ps1'
+Invoke-WebRequest -Uri $source -OutFile $destination
 
 # Download zoomit ver 4.50 (works with pen)
-$source4 = 'https://github.com/www42/TrainyMotion/raw/master/tools/ZoomIt.exe'
-$destination4 = 'C:\temp\ZoomIt.exe'
-Invoke-WebRequest -Uri $source4 -OutFile $destination4
+$source = 'https://github.com/www42/TrainyMotion/raw/master/tools/ZoomIt.exe'
+$destination = 'C:\temp\ZoomIt.exe'
+Invoke-WebRequest -Uri $source -OutFile $destination
 
 # Download CpuStress
-$source5 = 'https://download.sysinternals.com/files/CPUSTRES.zip'
-$destination5 = 'C:\temp\CPUSTRES.zip'
-Invoke-WebRequest -Uri $source5 -OutFile $destination5
+$source = 'https://download.sysinternals.com/files/CPUSTRES.zip'
+$destination = 'C:\temp\CPUSTRES.zip'
+Invoke-WebRequest -Uri $source -OutFile $destination
