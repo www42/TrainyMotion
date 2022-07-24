@@ -27,3 +27,4 @@ az resource list --resource-group $rgName --query "sort_by([].{name:name,Type:ty
 
 # --- Delete resource group --------------------
 az group delete --resource-group $rgName --yes --no-wait
+az group list --query "[].{name:name,location:location,provisioningState:properties.provisioningState}" --output table
