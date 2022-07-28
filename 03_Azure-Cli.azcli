@@ -1,5 +1,5 @@
-#! /bin/bash
-# -----------
+# Azure CLI Login
+# ===============
 az account clear
 az login
 #az login --use-device-code
@@ -13,3 +13,22 @@ echo $subscriptionId
 # Set default subscription
 subscriptionId='878d9f5d-be8d-478e-a0e8-8ddc8cc5ce5d'
 az account set --subscription $subscriptionId
+
+
+
+# Azure CLI Update
+# ================
+az version
+
+# Upgrade Windows: WSL Bash
+sudo apt-get update
+sudo apt-get upgrade
+
+# Upgrade MacOs: Bash
+brew update
+brew upgrade
+
+
+# Upgrade Bicep
+az bicep version
+az bicep upgrade

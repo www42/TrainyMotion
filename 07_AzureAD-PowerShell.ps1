@@ -1,37 +1,45 @@
-# Azure modules
-# ==============
-Get-Module -ListAvailable -Name Az
-Find-Module -Name Az -Repository PSGallery
+# AzureAD Login
+# =============
+Disconnect-AzureAD
+Connect-AzureAD
 
-#  MacOS: bash -> sudo pwsh -> update module -> exit
-#  Windows: Run as Administrator -> Windows Terminal
-Find-Module -Name Az -Repository PSGallery | Update-Module -Scope AllUsers -Force
-
-Uninstall-Module -Name Az -RequiredVersion 7.3.2
+# If connecting with a federated Microsoft account (e.g. paul@outlook.com) you have to specify the Tenant Id
+# Connect-AzureAD -TenantId $TenantId
 
 
-# Azure AD module
-# ================
+Get-AzureADTenantDetail | Format-List DisplayName, `
+                                      @{n="TenantId";e={$_.ObjectId}}, `
+                                      @{n="VerifiedDomains";e={$_.VerifiedDomains.Name}} 
+
+
+
+
+
 
 # -------------------------------------
-##  Windows PowerShell --> AzureAD
+##  WindowsPowerShell 5.1 --> AzureAD
 # -------------------------------------
 Get-Module    -Name AzureAD -ListAvailable
 Find-Module   -Name AzureAD -Repository PSGallery
-Find-Module   -Name AzureAD -Repository PSGallery | Update-Module
+Find-Module   -Name AzureAD -Repository PSGallery | Update-Module -Scope AllUsers -Force
 Import-Module -Name AzureAD
 
-# ------------------------------------------------------------------------------------------
-##  PowerShell 7 (Windows, MacOS) --> AzureAD.Standard.Preview from PoshTestGallery
-# ------------------------------------------------------------------------------------------
+
+
+
+# ------------------------------------------------------------------
+##  PowerShell 7 --> AzureAD.Standard.Preview from PoshTestGallery
+# ------------------------------------------------------------------
 # Register-PackageSource -Name PoshTestGallery -Location https://www.poshtestgallery.com/api/v2/ -ProviderName PowerShellGet
 
 Get-Module    -Name AzureAD.Standard.Preview -ListAvailable
 Import-Module -Name AzureAD.Standard.Preview
 
 # Vorsicht beim Update! Nimm nur die Version, die auch in der CloudShell installiert ist.
-# Find-Module -Name AzureAD.Standard.Preview -Repository PoshTestGallery     -AllVersions | Update-Module
-# Find-Module -Name AzureAD.Standard.Preview -Repository "Posh Test Gallery" -AllVersions | Update-Module
+# Find-Module -Name AzureAD.Standard.Preview -Repository PoshTestGallery     -AllVersions | Update-Module -Scope AllUsers -Force
+# Find-Module -Name AzureAD.Standard.Preview -Repository "Posh Test Gallery" -AllVersions | Update-Module -Scope AllUsers -Force
+
+
 
 
 

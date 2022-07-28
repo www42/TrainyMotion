@@ -82,10 +82,16 @@ $GlobalAdministrator = Get-AzureADDirectoryRole | Where-Object DisplayName -eq '
 Get-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId
 
 # Dirty: Rename user's UPN to initial domain name
-Get-AzureADDomainNameReference -Name $Domain | ForEach-Object {
+Get-AzureADDomainNameReference -Name $Domain | Where-Object ObjectType -EQ 'User' | ForEach-Object {
     $Name = $_.UserPrincipalName.split('@')[0]
     Set-AzureADUser -ObjectId $_.ObjectId -UserPrincipalName "$Name@$InitialDomain"
 }
+
+# Dirty: Delete Groups
+Get-AzureADDomainNameReference -Name $Domain | Where-Object ObjectType -EQ 'Group' | ForEach-Object {
+    Remove-AzureADGroup -ObjectId $_.ObjectId
+}
+
 
 # Azure AD - custom domain - delete
 Remove-AzureADDomain -Name $Domain
