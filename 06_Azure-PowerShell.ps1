@@ -22,7 +22,7 @@ Find-Module -Name Az -Repository PSGallery
 # Update Windows: Run as Administrator(Windows Terminal) -> PowerShell 7 -> Update-Module -> exit
 Find-Module -Name Az -Repository PSGallery | Update-Module -Scope AllUsers -Force
 
-Uninstall-Module -Name Az -RequiredVersion 7.3.2
+Uninstall-Module -Name Az -RequiredVersion 7.4.0
 
 
 # WindowsPowerShell 5.1
