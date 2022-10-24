@@ -10,7 +10,7 @@ az group create --name $rgName --location $location
 az deployment group create \
     --resource-group $rgName \
     --template-file $file \
-    --parameters vmSize='Standard_D2as_v5' vmAdminUserName='localadmin' vmAdminPassword=''
+    --parameters vmSize='Standard_D2s_v3' vmAdminUserName='localadmin' vmAdminPassword='Pa$$w0rd1234'
 
 
 

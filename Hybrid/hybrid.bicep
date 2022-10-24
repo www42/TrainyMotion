@@ -1,9 +1,10 @@
 param location string = resourceGroup().location
 
 param vmName string = 'DC1'
-param vmSize string = 'Standard_D2as_v5'
+param vmSize string = 'Standard_D2s_v3'
 param vmIp string = '172.17.0.200'
 param vmAdminUserName string
+@secure()
 param vmAdminPassword string
 param vmNodeConfigurationName string = 'ADDomain_NewForest.localhost'
 

@@ -14,6 +14,13 @@ $Headers = @{Authorization = "sso-key $($ApiKey):$($ApiSecret)"}
 
 $Domain = 'trainymotion.com'
 
+# GoDaddy - list all TXT records
+Invoke-RestMethod -Method GET -Headers $Headers -Uri "$GoDaddy/$Domain/records/TXT"
+
+# GoDaddy - delete *all* TXT records with name `@´
+Invoke-RestMethod -Method DELETE -Headers $Headers -Uri "$GoDaddy/$Domain/records/TXT/@"
+
+
 # Azure AD - add custom domain
 New-AzureADDomain -Name $Domain
 Get-AzureADDomain | Format-Table Name, IsVerified, IsDefault
@@ -22,11 +29,6 @@ Get-AzureADDomain | Format-Table Name, IsVerified, IsDefault
 $VerificationDnsRecord = Get-AzureADDomainVerificationDnsRecord -Name $Domain | Where-Object RecordType -EQ 'Txt'
 $VerificationDnsRecord  | Format-List Label, RecordType, Ttl, Text
 
-# GoDaddy - custom domain - list all TXT records
-Invoke-RestMethod -Method GET -Headers $Headers -Uri "$GoDaddy/$Domain/records/TXT"
-
-# GoDaddy - custom domain - delete *all* TXT records with name `@´
-Invoke-RestMethod -Method DELETE -Headers $Headers -Uri "$GoDaddy/$Domain/records/TXT/@"
 
 # GoDaddy - custom domain - create DNS verification TXT record
 #
