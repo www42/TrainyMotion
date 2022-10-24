@@ -9,9 +9,9 @@ $PasswordProfile.Password = 'xxxxxxxxxxxxxx'
 $PasswordProfile.ForceChangePasswordNextLogin = $false
 
 $Params = @{
-    DisplayName       = 'Sync'
-    UserPrincipalName = "Sync@$Domain"
-    MailNickName      = 'Sync'
+    DisplayName       = 'GlobalAdminAuxSync'
+    UserPrincipalName = "GlobalAdminAuxSync@$Domain"
+    MailNickName      = 'GlobalAdminAuxSync'
     UsageLocation     = 'DE'
     PasswordProfile   = $PasswordProfile
     AccountEnabled    = $true
