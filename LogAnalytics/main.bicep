@@ -12,7 +12,7 @@ module LogAnalyticsWorkspace 'LogAnalyticsWorkspace.bicep' = {
   name: 'LogAnalyticsWorkspaceDeployment'
   scope: resourceGroup
   params: {
-    logAnalyticsWorkspaceName: 'LA-Workspace1'
+    logAnalyticsWorkspaceName: 'log-workspace1'
     location: location
   }
 }

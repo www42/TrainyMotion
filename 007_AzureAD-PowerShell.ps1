@@ -31,9 +31,11 @@ Import-Module -Name AzureAD
 ##  PowerShell 7 --> AzureAD.Standard.Preview from PoshTestGallery
 # ------------------------------------------------------------------
 # Register-PackageSource -Name PoshTestGallery -Location https://www.poshtestgallery.com/api/v2/ -ProviderName PowerShellGet
+Get-PackageSource
 
 Get-Module    -Name AzureAD.Standard.Preview -ListAvailable
-Import-Module -Name AzureAD.Standard.Preview
+Import-Module -Name AzureAD.Standard.Preview -RequiredVersion 0.0.0.10
+Get-Module    -Name AzureAD.Standard.Preview
 
 # Vorsicht beim Update! Nimm nur die Version, die auch in der CloudShell installiert ist.
 # Find-Module -Name AzureAD.Standard.Preview -Repository PoshTestGallery     -AllVersions | Update-Module -Scope AllUsers -Force

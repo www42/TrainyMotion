@@ -1,6 +1,6 @@
 @minLength(4)
 @maxLength(63)
-param logAnalyticsWorkspaceName string = 'LogAnalytics-Workspace1'
+param logAnalyticsWorkspaceName string = 'log-workspace1'
 param location string = resourceGroup().location
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
