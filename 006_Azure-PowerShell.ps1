@@ -66,7 +66,7 @@ function Remove-OldAzModule {
 #   a) Remove all old versions of Az and Az.* by calling Remove-OldAzModule
 #   b) Install new version of 'Az'
 Remove-OldAzModule
-Find-Module -Name Az -Re4pository PSGallery | Install-Module -Scope AllUsers -Force
+Find-Module -Name Az -Repository PSGallery | Install-Module -Scope AllUsers -Force
 
 
 
