@@ -28,22 +28,37 @@ function Remove-OldAzModule {
     #   b) Uninstall module Az
     #
     #   See https://smarttechways.com/2021/05/18/install-and-uninstall-az-module-in-powershell-for-azure/
-    $AzVersions = Get-Module -Name Az -ListAvailable
 
-    #   a) Uninstall all dependent modules Az.*
-    $AzModules = ($AzVersions | 
-        ForEach-Object {
-            Import-Clixml -Path (Join-Path -Path $_.ModuleBase -ChildPath PSGetModuleInfo.xml)
-        }).Dependencies.Name | Sort-Object -Unique
+    #   WindowsPowerShell 5 differs from PowerShell 7:
+    #   Get-Module -Name Az   # does not work
 
-    $AzModules | ForEach-Object {
-        Remove-Module -Name $_ -ErrorAction SilentlyContinue
-        Write-Output "Uninstalling module $_"
-        Uninstall-Module -Name $_ -AllVersions
+    switch ($PSVersionTable.PSVersion.Major) {
+        '5' {
+            $AzVersions = Get-ChildItem 'C:\Program Files\WindowsPowerShell\Modules\Az\' 
+            $AzModules = ($AzVersions | 
+                ForEach-Object {
+                    Import-Clixml -Path (Join-Path -Path $_.FullName -ChildPath PSGetModuleInfo.xml)
+                }).Dependencies.Name | Sort-Object -Unique
+        }
+        '7' {
+            $AzVersions = Get-Module -Name Az -ListAvailable
+            $AzModules = ($AzVersions | 
+                ForEach-Object {
+                    Import-Clixml -Path (Join-Path -Path $_.ModuleBase -ChildPath PSGetModuleInfo.xml)
+                }).Dependencies.Name | Sort-Object -Unique
+        }
     }
 
+    #   a) Uninstall all dependent modules Az.*
+    $AzModules | ForEach-Object {
+        Remove-Module -Name $_ -ErrorAction SilentlyContinue
+        Write-Output "Uninstalling module $_ ..."
+        Uninstall-Module -Name $_ -AllVersions
+    }
+    
     #    b) Uninstall module Az
     Remove-Module -Name Az -ErrorAction SilentlyContinue
+    Write-Output "Uninstalling module Az"
     Uninstall-Module -Name Az -AllVersions
 }
 
@@ -55,8 +70,6 @@ Find-Module -Name Az -Re4pository PSGallery | Install-Module -Scope AllUsers -Fo
 
 
 
-
-
 # WindowsPowerShell 5.1
 # ---------------------
 # Get-Module -ListAvailable -Name Az     # Does not work
@@ -64,7 +77,6 @@ Find-Module -Name Az -Re4pository PSGallery | Install-Module -Scope AllUsers -Fo
 # Die in WindowsPowerShell installierte Version wird angezeigt, 
 # wenn man diesen Befehl unter PowerShell 7 laufen lässt.
 
-# Update: Run as Administrator(Windows Terminal) -> WindowsPowerShell -> Update-Module -> exit
-Find-Module -Name Az -Repository PSGallery | Update-Module -Scope AllUsers -Force
-
-Uninstall-Module -Name Az -RequiredVersion 7.3.2
+# Update module Az:  wie oben
+Remove-OldAzModule
+Find-Module -Name Az -Re4pository PSGallery | Install-Module -Scope AllUsers -Force
