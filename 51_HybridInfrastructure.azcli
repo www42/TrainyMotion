@@ -1,7 +1,7 @@
 # -------------------------------------------------------------------
 # Deployment
 # -------------------------------------------------------------------
-rgName='Hybrid-RG'
+rgName='Hybrid2-RG'
 location='westeurope'
 file='Hybrid/hybrid.bicep'
 
@@ -10,7 +10,7 @@ az group create --name $rgName --location $location
 az deployment group create \
     --resource-group $rgName \
     --template-file $file \
-    --parameters vmSize='Standard_D2s_v3' vmAdminUserName='localadmin' vmAdminPassword='Pa$$w0rd1234'
+    --parameters vmAdminUserName='localadmin' vmAdminPassword='3dXc,#%]H#(<car4'
 
 
 

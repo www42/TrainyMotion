@@ -1,12 +1,16 @@
 param location string = resourceGroup().location
 
-param vmName string = 'DC1'
 param vmSize string = 'Standard_D2s_v3'
-param vmIp string = '172.17.0.200'
 param vmAdminUserName string
 @secure()
 param vmAdminPassword string
-param vmNodeConfigurationName string = 'ADDomain_NewForest.localhost'
+
+param dcName string = 'DC1'
+param dcIp string = '172.17.0.200'
+param dcNodeConfigurationName string = 'ADDomain_NewForest.localhost'
+
+param svrName string = 'SVR1'
+param svrIp string = '172.17.0.201'
 
 param vnetName string = 'Hybrid-VNet'
 param vnetAddressSpace string = '172.17.0.0/16'
@@ -23,9 +27,12 @@ param aaConfigurationSourceUri string = 'https://raw.githubusercontent.com/www42
 
 var bastionName = '${vnetName}-Bastion'
 var bastionPipName = '${vnetName}-Bastion-Pip'
-var vmOsDiskName = '${vmName}-Disk'
-var vmComputerName = vmName
-var nicName = '${vmName}-Nic'
+var dcOsDiskName = '${dcName}-Disk'
+var dcComputerName = dcName
+var dcNicName = '${dcName}-Nic'
+var svrOsDiskName = '${svrName}-Disk'
+var svrComputerName = svrName
+var svrNicName = '${svrName}-Nic'
 var aaJobName = '${aaConfigurationName}-Compile'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2020-06-01' = {
@@ -82,28 +89,28 @@ resource bastionPip 'Microsoft.Network/publicIPAddresses@2020-06-01' = {
     publicIPAllocationMethod: 'Static'
   }
 }
-resource vm 'Microsoft.Compute/virtualMachines@2020-06-01' = {
-  name: vmName
+resource dc 'Microsoft.Compute/virtualMachines@2020-06-01' = {
+  name: dcName
   location: location
   properties: {
     hardwareProfile: {
       vmSize: vmSize
     }
     storageProfile: {
-      imageReference:{
+      imageReference: {
         publisher: 'MicrosoftWindowsServer'
         offer: 'WindowsServer'
         sku: '2022-datacenter-azure-edition'
         version: 'latest'
       }
       osDisk: {
-        name: vmOsDiskName
+        name: dcOsDiskName
         caching: 'ReadWrite'
         createOption: 'FromImage'
       }
     }
     osProfile: {
-      computerName: vmComputerName
+      computerName: dcComputerName
       adminUsername: vmAdminUserName
       adminPassword: vmAdminPassword
       windowsConfiguration: {
@@ -113,14 +120,14 @@ resource vm 'Microsoft.Compute/virtualMachines@2020-06-01' = {
     networkProfile:{
       networkInterfaces: [
         {
-          id: nic.id
+          id: dcNic.id
         }
       ]
     }
   }
 }
-resource nic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
-  name: nicName
+resource dcNic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
+  name: dcNicName
   location: location
   properties: {
     ipConfigurations: [
@@ -128,7 +135,7 @@ resource nic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
         name: 'ipConfig1'
         properties: {
           privateIPAllocationMethod: 'Static'
-          privateIPAddress: vmIp
+          privateIPAddress: dcIp
           subnet: {
             id: vnet.properties.subnets[0].id
           }
@@ -137,8 +144,8 @@ resource nic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
     ]
   }
 }
-resource extension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
-  name: '${vm.name}/Dsc'
+resource dcExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
+  name: '${dc.name}/Dsc'
   location: location
   dependsOn: [
     aaJob
@@ -170,7 +177,7 @@ resource extension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
         }
         {
           Name: 'NodeConfigurationName'
-          Value: vmNodeConfigurationName
+          Value: dcNodeConfigurationName
           TypeName: 'System.String'
         }
         {
@@ -188,6 +195,66 @@ resource extension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
           Value: 'ContinueConfiguration'
           TypeName: 'System.String'
         }
+      ]
+    }
+  }
+}
+resource svr 'Microsoft.Compute/virtualMachines@2022-08-01' = {
+  name: svrName
+  location: location
+  properties: {
+    hardwareProfile: {
+      vmSize: vmSize
+    }
+    storageProfile: {
+      imageReference: {
+        publisher: 'MicrosoftWindowsServer'
+        offer: 'WindowsServer'
+        sku: '2022-datacenter-azure-edition'
+        version: 'latest'
+      }
+      osDisk: {
+        name: svrOsDiskName
+        caching: 'ReadWrite'
+        createOption: 'FromImage'
+      }
+    }
+    osProfile: {
+      computerName: svrComputerName
+      adminUsername: vmAdminUserName
+      adminPassword: vmAdminPassword
+      windowsConfiguration: {
+        timeZone: 'W. Europe Standard Time'
+      }
+    }
+    networkProfile:{
+      networkInterfaces: [
+        {
+          id: svrNic.id
+        }
+      ]
+    }
+  }
+}
+resource svrNic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
+  name: svrNicName
+  location: location
+  properties: {
+    ipConfigurations: [
+      {
+        name: 'ipConfig1'
+        properties: {
+          privateIPAllocationMethod: 'Static'
+          privateIPAddress: svrIp
+          subnet: {
+            id: vnet.properties.subnets[0].id
+          }
+        }
+      }
+    ]
+    dnsSettings: {
+      dnsServers: [
+        dcIp
       ]
     }
   }
@@ -246,5 +313,6 @@ resource aaJob 'Microsoft.Automation/automationAccounts/compilationjobs@2020-01-
 
 output vnetId string = vnet.id
 output bastionId string = bastion.id
-output vmId string = vm.id
+output dcId string = dc.id
+output svrId string = svr.id
 output aaId string = aa.id
