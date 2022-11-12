@@ -1,0 +1,42 @@
+az account list
+
+az ad app list
+az ad app list --query "length([*])"
+az ad app list --query "[*].{displayName:displayName,appId:appId}" --output table
+
+az ad app show --id $appId --query "{displayName:displayName,appId:appId,redirectUris:web.redirectUris[0]}"
+
+# Create app (App Registration)
+displayName='postman'
+webRedirectUri='https://oauth.pstmn.io/v1/browser-callback'
+appId=$(az ad app create --display-name $displayName --web-redirect-uris $webRedirectUri --sign-in-audience AzureADMyOrg --query "appId" --output tsv)
+
+# Set app's secret (password)
+az ad app credential list --id $appId
+clientSecret=$(az ad app credential reset --id $appId --years 1 --query "password" --output tsv)
+
+# Create service principal (Enterprise App?)
+az ad sp list
+az ad sp list --query "length([*])"
+az ad sp list --show-mine # ??
+az ad sp show --id 869c758d-79ff-4c56-820f-ad0290dcad31  # Object ID
+az ad sp show --id 1dda3f58-ecdd-4de8-b488-2e1fe634fbef  # App ID      beides geht
+
+
+# ------ From postman doc ----------------
+#   funktioniert
+echo $subscriptionId
+subscriptionId=$(az account list --all --query "[?isDefault].id" --output tsv)
+sp=$(az ad sp create-for-rbac --name postman --role contributor --scopes /subscriptions/$subscriptionId)
+clientId=$(echo $sp | jq .appId | tr -d '"')
+clientSecret=$(echo $sp | jq .password | tr -d '"')
+subscriptionId=$(az account show --query id --output tsv)
+tenantId=$(az account show --query tenantId --output tsv)
+echo -e "\nsubscriptionId $subscriptionId\ntenantId       $tenantId\nclientId       $clientId\nclientSecret   $clientSecret\n"
+# ----------------------------------------
+
+# Create environment in Postman
+
+
+# Delete app
+# az ad app delete --id $appId
