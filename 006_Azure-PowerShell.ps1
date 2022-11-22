@@ -19,8 +19,7 @@ $TenantId     = Get-AzSubscription | Where-Object State -EQ 'enabled' | % Tenant
 
 # PowerShell 7
 # ------------
-Get-Module -ListAvailable -Name Az
-Get-Module -ListAvailable -Name Az.* | Measure-Object | % Count
+Get-Module  -Name Az -ListAvailable
 Find-Module -Name Az -Repository PSGallery
 
 function Remove-OldAzModule {
@@ -79,4 +78,4 @@ Find-Module -Name Az -Repository PSGallery | Install-Module -Scope AllUsers -For
 
 # Update module Az:  wie oben
 Remove-OldAzModule
-Find-Module -Name Az -Re4pository PSGallery | Install-Module -Scope AllUsers -Force
+Find-Module -Name Az -Repository PSGallery | Install-Module -Scope AllUsers -Force
