@@ -37,7 +37,6 @@ Add-TmAzureADGroupMember -MemberName "Ernst Mach"              -GroupName "Gener
 Add-TmAzureADGroupMember -MemberName "Erwin Schrödinger"       -GroupName "Quantum Mechanics"
 Add-TmAzureADGroupMember -MemberName "Max Planck"              -GroupName "Quantum Mechanics"
 Add-TmAzureADGroupMember -MemberName "Niels Bohr"              -GroupName "Quantum Mechanics"
-Add-TmAzureADGroupMember -MemberName "Wolfgang Pauli"          -GroupName "Quantum Mechanics"
 Add-TmAzureADGroupMember -MemberName "Max Born"                -GroupName "Quantum Mechanics"
 Add-TmAzureADGroupMember -MemberName "Enrico Fermi"            -GroupName "Quantum Mechanics"
 Add-TmAzureADGroupMember -MemberName "Johannes Stark"          -GroupName "Quantum Mechanics"
@@ -50,7 +49,6 @@ Add-TmAzureADGroupMember -MemberName "Electoweak Interactions" -GroupName "Quant
 Add-TmAzureADGroupMember -MemberName "Semiconductor Devices"   -GroupName "Solid State Physics"
 
 # First level groups
-Add-TmAzureADGroupMember -MemberName "Albert Einstein"         -GroupName "Theoretical Physics"
 Add-TmAzureADGroupMember -MemberName "Lev Landau"              -GroupName "Theoretical Physics"
 Add-TmAzureADGroupMember -MemberName "Richard Feynman"         -GroupName "Theoretical Physics"
 Add-TmAzureADGroupMember -MemberName "General Relativity"      -GroupName "Theoretical Physics"

@@ -1,13 +1,11 @@
 GivenName,Surname,TelephoneNumber,CompanyName,EmployeeId,UsageLocation,City,Country,Department,JobTitle
 Erwin,Schrödinger,+438151933,Trainymotion,hr30,AT,Vienna,Austria,Theoretical Physics,Senior Professor
-Albert,Einstein,+498151921,Trainymotion,hr24,DE,Ulm,Germany,Theoretical Physics,Senior Professor
 François,Englert,+328152013,Trainymotion,hr27,BE,Etterbeek,Belgium,Theoretical Physics,Senior Professor
 Max,Planck,+498151918,Trainymotion,hr25,DE,Kiel,Germany,Theoretical Physics,Senior Professor
 Peter,Higgs,+448152013,Trainymotion,hr26,GB,Newcastle,UK,Theoretical Physics,Senior Professor
 Niels,Bohr,+458151922,Trainymotion,hr28,DK,Copenhagen,Denmark,Theoretical Physics,Senior Professor
 Johannes,Stark,+498151919,Trainymotion,hr29,DE,Göttingen,Germany,Experimental Physics,Senior Professor
 Enrico,Fermi,+398151938,Trainymotion,hr32,IT,Rome,Italy,Theoretical Physics,Senior Professor
-Wolfgang,Pauli,+438151945,Trainymotion,hr33,AT,Vienna,Austria,Theoretical Physics,Senior Professor
 Max,Born,+498151954,Trainymotion,hr34,DE,Göttingen,Germany,Theoretical Physics,Senior Professor
 William,Shockley,+18151956,Trainymotion,hr35,US,Stanford,United States,Solid State Physics,Senior Professor
 John,Bardeen,+181519561972,Trainymotion,hr36,US,Princeton,United States,Solid State Physics,Senior Professor
