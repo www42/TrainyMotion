@@ -7,8 +7,8 @@ az login
 az account list --all --query "[].{Subscription:id,Name:name,User:user.name,isDefault:isDefault}" --output table
 az account show
 
-subscriptionId=$(az account list --all --query "[?isDefault].id" --output tsv)
-echo $subscriptionId 
+$subscriptionId=$(az account list --all --query "[?isDefault].id" --output tsv)
+$subscriptionId 
 
 # Set default subscription
 subscriptionId='878d9f5d-be8d-478e-a0e8-8ddc8cc5ce5d'

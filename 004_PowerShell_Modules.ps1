@@ -16,6 +16,8 @@ Find-Module -Name Az -Repository PSGallery
 #    Get-Module  -Name Az -ListAvailable
 # does not work in Windows PowerShell 5.1. To display the installed version in 5.1 use PowerShell 7.
 
+# Note:
+# Update-Module Az    does not remove the old version neither of module Az nor the dependent modules. 
 # Update procedure:
 #   a) Remove all old versions of Az and Az.* by calling Remove-OldAzModule
 #   b) Install new version of 'Az'
@@ -60,18 +62,13 @@ function Remove-OldAzModule {
 }
 
 Remove-OldAzModule
-Install-Module -Name Az -Repository PSGallery -Scope AllUsers -Force
-
-# Unclarified:
-# Does the following command remove the old module versions?löscht Update-Module die alten Versionen? Wenn ja dann kann man sich a) und b) sparen.
-# Statt dessen simpel (run as Administrator)
-Update-Module -Name Az -Repository PSGallery -Scope AllUsers -Force
 
 
 
-# ----------------------------------------------------------
-# Azure AD PowerShell for Graph (Module AzureAD)
-# ----------------------------------------------------------
+
+# ------------------------------------------------------------------------
+# Azure AD PowerShell for Graph (Module AzureAD) - planned for deprecation
+# ------------------------------------------------------------------------
 
 # Note:
 # Azure AD, Azure AD Preview and MSOnline PowerShell modules are planned for deprecation. 
