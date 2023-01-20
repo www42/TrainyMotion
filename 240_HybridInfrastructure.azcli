@@ -1,18 +1,16 @@
 # -------------------------------------------------------------------
 # Deployment
 # -------------------------------------------------------------------
-rgName='OnPrem-RG'
-location='westeurope'
-file='Hybrid/hybrid.bicep'
+$rgName='OnPrem-RG'
+$location='westeurope'
+$file='Hybrid/hybrid.bicep'
 
 az group create --name $rgName --location $location
 
-read -sp "Enter vmAdminPassword: " adminPassword
+# read -sp "Enter vmAdminPassword: " adminPassword
 
-az deployment group create \
-    --resource-group $rgName \
-    --template-file $file \
-    --parameters vmAdminUserName='localadmin' vmAdminPassword=$adminPassword
+
+az deployment group create --resource-group $rgName --template-file $file --parameters vmAdminUserName='localadmin' vmAdminPassword=''
 
 
 
