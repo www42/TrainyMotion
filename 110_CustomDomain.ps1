@@ -1,6 +1,5 @@
-# Requires -Version 7
-# --------------------
-$PSVersionTable
+# Requires -Version 5.1
+$PSVersionTable.PSVersion
 
 # GoDaddy - my account
 $ApiKey    = 'xxx'
@@ -32,12 +31,22 @@ $VerificationDnsRecord  | Format-List Label, RecordType, Ttl, Text
 
 # GoDaddy - custom domain - create DNS verification TXT record
 #
-$Body = @{
+#   This works on PS 7 only.    ConvertTo-Json -AsArray does not work in PS 5.1 (the parameter -AsArray is missing here)
+#   ------------------------
+#   $Body = @{
+#       name = "@"
+#       data = "$($VerificationDnsRecord.Text)"
+#       ttl  =  $($VerificationDnsRecord.Ttl)
+#       type = 'TXT'
+#   } | ConvertTo-Json -AsArray
+
+$BodyArray = @{
     name = "@"
     data = "$($VerificationDnsRecord.Text)"
     ttl  =  $($VerificationDnsRecord.Ttl)
     type = 'TXT'
-} | ConvertTo-Json -AsArray
+}
+$Body = ConvertTo-Json @( $BodyArray)
 
 $Params = @{
     Method = "PATCH"
@@ -49,10 +58,8 @@ $Params = @{
 
 Invoke-RestMethod @Params
 
-# Das Internet ....
+# Is the TXT record resolvable?
 Resolve-DnsName -Name $Domain -Type TXT 
-# MacOS module DnsClient not available
-dig $Domain txt
 
 # Azure AD - custom domain - verify
 Confirm-AzureADDomain -Name $Domain
@@ -62,9 +69,6 @@ Get-AzureADDomain | Format-Table Name, IsVerified, IsDefault
 Set-AzureADDomain -Name $Domain -IsDefault $true
 Get-AzureADDomain | Format-Table Name, IsVerified, IsDefault
 
-# Azure AD - custom domain - set display name
-Get-AzureADTenantDetail | Format-List ObjectId,DisplayName,VerifiedDomains
-# ???
 
 
 # ==============================================================
