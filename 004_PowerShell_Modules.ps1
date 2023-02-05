@@ -1,10 +1,3 @@
-# Note:
-# Update as root/Administrator!
-#   MacOS: Bash -> sudo pwsh 
-#   Windows: Run as Administrator(Windows Terminal) -> PowerShell 7 
-#                                                   -> Windows PowerShell 5
-
-
 # ----------------------------------------------------------
 # Azure PowerShell (Module Az)
 # ----------------------------------------------------------
@@ -17,11 +10,16 @@ Find-Module -Name Az -Repository PSGallery
 # does not work in Windows PowerShell 5.1. To display the installed version in 5.1 use PowerShell 7.
 
 # Note:
-# Update-Module Az    does not remove the old version neither of module Az nor the dependent modules. 
+#   Update-Module Az
+# does not remove the old version neither of module Az nor the dependent modules. 
 # Update procedure:
 #   a) Remove all old versions of Az and Az.* by calling Remove-OldAzModule
-#   b) Install new version of 'Az'
+#   b) Install new version of Az
 
+# Update as root/Administrator!
+#   MacOS: Bash -> sudo pwsh 
+#   Windows: Run as Administrator(Windows Terminal) -> PowerShell 7 
+#                                                   -> Windows PowerShell 5
 function Remove-OldAzModule {
     #   a) Uninstall all dependent modules Az.*
     #   b) Uninstall module Az
@@ -60,9 +58,8 @@ function Remove-OldAzModule {
     Write-Output "Uninstalling module Az"
     Uninstall-Module -Name Az -AllVersions
 }
-
 Remove-OldAzModule
-
+Install-Module -Name Az -Scope AllUsers -Force
 
 
 
@@ -71,12 +68,12 @@ Remove-OldAzModule
 # ------------------------------------------------------------------------
 
 # Note:
-# Azure AD, Azure AD Preview and MSOnline PowerShell modules are planned for deprecation. 
+# 'Azure AD', 'Azure AD Preview' and 'MSOnline' PowerShell modules are planned for deprecation. 
 # Use Microsoft Graph PowerShell instead.
 # https://learn.microsoft.com/en-us/powershell/microsoftgraph/migration-steps
 
 # Note:
-# Azure AD uses Azure AD Graph - not Microsoft Graph.
+# 'Azure AD' uses Azure AD Graph - not Microsoft Graph.
 
 # Note: 
 # The Azure AD PowerShell module is not compatible with PowerShell 7. It is only supported in Windows PowerShell 5.1.
@@ -95,12 +92,17 @@ Update-Module -Name AzureAD -Repository PSGallery -Scope AllUsers -Force
 
 
 
+
+
 # ----------------------------------------------------------
 # Microsoft Graph PowerShell (Module Microsoft.Graph)
 # ----------------------------------------------------------
 Get-Module    -Name Microsoft.Graph -ListAvailable
 Find-Module   -Name Microsoft.Graph -Repository PSGallery
 Update-Module -Name Microsoft.Graph -Repository PSGallery -Scope AllUsers -Force
+Install-Module -Name Microsoft.Graph -Repository PSGallery -Scope AllUsers -Force
+
+
 
 
 # ----------------------------------------------------------

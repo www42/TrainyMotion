@@ -31,40 +31,24 @@ Get-AzureADTenantDetail | Format-List DisplayName, `
 # Microsoft.Graph Login
 # ----------------------------------------------------------
 Connect-MgGraph
-Connect-MgGraph -TenantId $tenantId
 
-$scopes = @(
-    "Directory.Read.All"
-    "Group.Read.All"
-    "Chat.Read.All"
-)
-Connect-MgGraph -Scope $scopes 
-Get-MgProfile
 Get-MgContext
 Get-MgContext | % Scopes
 
-Disconnect-MgGraph 
+# Scopes (= permissions) can be added cumulatively
+$Scopes = @(
+    "User.Read.All"
+    "Group.Read.All"
+)
+Connect-MgGraph -Scopes $Scopes
 
-Invoke-MgGraphRequest -Method GET https://graph.microsoft.com/v1.0/me
+# Find available scopes by object type e.g. user
+Find-MgGraphPermission -SearchString user -PermissionType Delegated
 
-Find-MgGraphCommand -Command Get-MgUser
-Find-MgGraphCommand -Command Get-MgUser | Measure-Object
-Find-MgGraphCommand -Command Get-MgUser | Select-Object -First 1 -ExpandProperty Permissions
+# Find rquired scopes by Graph uri
+Find-MgGraphCommand -Uri "/users"
+Find-MgGraphCommand -Uri "/users"      -ApiVersion v1.0 -Method POST   | % Permissions
+Find-MgGraphCommand -Uri "/users/{id}" -ApiVersion v1.0 -Method DELETE | % Permissions
 
-# MSAL
-# -----------
-Get-Help Get-MsalToken -Examples
-$MsalToken = Get-MsalToken -ClientId '00000000-0000-0000-0000-000000000000' -Scope 'https://graph.microsoft.com/User.Read' # Does not work - ClientId needed
-Invoke-RestMethod -Method Get -Uri 'https://graph.microsoft.com/v1.0/me' -Headers @{ Authorization = $MsalToken.CreateAuthorizationHeader() }
 
-Get-MgContext
-
-# App registration
-az ad app list
-az ad app list --query "length([*])"
-az ad app list --query "[*].{displayName:displayName,appId:appId}" --output table
-$DisplayName = 'fooApp'
-az ad app list --query "[?displayName=='$DisplayName'].{displayName:displayName,appId:appId}" --output table
-$AppId = az ad app list --query "[?displayName=='$DisplayName'].appId" --output tsv
-
-# https://tech.nicolonsky.ch/explaining-microsoft-graph-access-token-acquisition/
+Disconnect-MgGraph

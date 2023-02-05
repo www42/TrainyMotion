@@ -1,4 +1,4 @@
-# Paul - Admin account for daily work
+# Paul - Admin account with initial domain name - break glass user
 # (Don't use the Account Admin for daily work.)
 # -------------------------------------------------------------------------
 # Paul --> Global Administrator --> Tenant
