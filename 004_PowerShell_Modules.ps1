@@ -88,7 +88,6 @@ Install-Module -Name Az -Scope AllUsers -Force
 
 Get-Module    -Name AzureAD -ListAvailable
 Find-Module   -Name AzureAD -Repository PSGallery
-Update-Module -Name AzureAD -Repository PSGallery -Scope AllUsers -Force
 
 
 
@@ -99,7 +98,29 @@ Update-Module -Name AzureAD -Repository PSGallery -Scope AllUsers -Force
 # ----------------------------------------------------------
 Get-Module    -Name Microsoft.Graph -ListAvailable
 Find-Module   -Name Microsoft.Graph -Repository PSGallery
-Update-Module -Name Microsoft.Graph -Repository PSGallery -Scope AllUsers -Force
+
+function Remove-OldGraphModule {
+    # Remove all Graph modules except Microsoft.Graph.Authentication
+    $Modules = Get-Module Microsoft.Graph* -ListAvailable | Where {$_.Name -ne "Microsoft.Graph.Authentication"} | Select-Object Name -Unique
+    Foreach ($Module in $Modules) {
+        $ModuleName = $Module.Name
+        $Versions = Get-Module $ModuleName -ListAvailable
+        Foreach ($Version in $Versions) {
+            $ModuleVersion = $Version.Version
+            Write-Host "Uninstall-Module $ModuleName $ModuleVersion"
+            Uninstall-Module $ModuleName -RequiredVersion $ModuleVersion
+        }
+    }
+    # Remove Microsoft.Graph.Authentication
+    $ModuleName = "Microsoft.Graph.Authentication"
+    $Versions = Get-Module $ModuleName -ListAvailable
+    Foreach ($Version in $Versions) {
+        $ModuleVersion = $Version.Version
+        Write-Host "Uninstall-Module $ModuleName $ModuleVersion"
+        Uninstall-Module $ModuleName -RequiredVersion $ModuleVersion
+    }
+}
+Remove-OldGraphModule
 Install-Module -Name Microsoft.Graph -Repository PSGallery -Scope AllUsers -Force
 
 
