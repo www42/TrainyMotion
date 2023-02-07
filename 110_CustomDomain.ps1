@@ -1,5 +1,5 @@
-# Requires -Version 5.1
-$PSVersionTable.PSVersion
+# Requires PS 5.1 - wegen Get-AzureADDomain etc.
+$PSVersionTable
 
 # GoDaddy - my account
 $ApiKey    = 'xxx'
@@ -11,7 +11,7 @@ $Headers = @{Authorization = "sso-key $($ApiKey):$($ApiSecret)"}
 # GoDaddy - list all active domains
 (Invoke-RestMethod -Method GET -Uri $GoDaddy -Headers $Headers) | Where-Object status -EQ 'ACTIVE' | Format-Table domain,status,expires
 
-$Domain = 'trainymotion.com'
+$Domain = 'contoso.training'
 
 # GoDaddy - list all TXT records
 Invoke-RestMethod -Method GET -Headers $Headers -Uri "$GoDaddy/$Domain/records/TXT"
