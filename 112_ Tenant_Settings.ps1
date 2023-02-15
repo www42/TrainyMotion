@@ -7,10 +7,12 @@ Connect-MgGraph -Scope $scopes
 Get-MgContext
 Get-MgContext | % Scopes
 
-Get-MgProfile
 
-# Get-TenantDetailsFromGraph
-Get-MgSecurityProviderTenantSetting
+
+
+
+
+GET /policies/identitySecurityDefaultsEnforcementPolicy
 
 
 Invoke-MgGraphRequest -Method GET https://graph.microsoft.com/v1.0/me
