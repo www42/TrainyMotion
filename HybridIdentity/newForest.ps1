@@ -1,4 +1,4 @@
-Configuration ADDomain_NewForest
+Configuration newForest
 {
     [CmdletBinding()]
     param (
