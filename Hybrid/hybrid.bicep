@@ -236,6 +236,37 @@ resource svr 'Microsoft.Compute/virtualMachines@2022-08-01' = {
     }
   }
 }
+
+
+param domainToJoin string
+param ouPath string
+param domainUsername string
+@secure()
+param domainPassword string
+param domainJoinOptions int
+
+resource svrExtension 'Microsoft.Compute/virtualMachines/extensions@2022-11-01' = {
+  name: '${svr.name}/joindomain'
+  location: location
+  properties: {
+    type: 'JsonADDomainExtension'
+    publisher: 'Microsoft.Compute'
+    typeHandlerVersion: '1.3'
+    autoUpgradeMinorVersion: true
+    settings: {
+      "Name": "[parameters('domainToJoin')]",
+      "OUPath": "[parameters('ouPath')]",
+      "User": "[concat(parameters('domainToJoin'), '\\', parameters('domainUsername'))]",
+      "Restart": "true",
+      "Options": "[parameters('domainJoinOptions')]"
+    }
+  }
+}
+
+
+
+
+
 resource svrNic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
   name: svrNicName
   location: location
