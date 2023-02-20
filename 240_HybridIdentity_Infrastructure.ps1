@@ -1,23 +1,17 @@
-# -------------------------------------------------------------------
-# Deployment
-# -------------------------------------------------------------------
-$rgName='OnPrem-RG'
-$location='westeurope'
-$templateFile='Hybrid/hybrid.bicep'
-dir $templateFile
-
-# az group create --name $rgName --location $location
-New-AzResourceGroup -Name $rgName -Location $location
-
-# read -sp "Enter vmAdminPassword: " adminPassword
-
-# az deployment group create --resource-group $rgName --template-file $templateFile --parameters vmAdminUserName='localadmin' vmAdminPassword=''
+# ---------------------------------------------------------------------------
+# Deployment OnPrem Domain Controller and Automation Account and Bastion Host
+# ---------------------------------------------------------------------------
+$templateFile='HybridIdentity/main.bicep'
+$location = 'westeurope'
 $templateParams = @{
-    vmAdminUserName = 'localadmin'
-    vmAdminPassword = '6kZrBmyy1GjpA5'
+    resourceGroupName = 'OnPrem-RG'
+    location = $location
+    domainName = 'az.training'
+    domainAdminName = 'DomainAdmin'
+    domainPassword = 'g1uxRMqczhhY'
     vnetName = "OnPrem-VNet"
 }
-New-AzResourceGroupDeployment -ResourceGroupName $rgName -TemplateFile $templateFile -TemplateParameterObject $templateParams
+New-AzSubscriptionDeployment -Name 'HybridIdentity' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $location
 
 
 
