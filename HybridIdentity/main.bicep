@@ -47,13 +47,6 @@ module aaDc 'templates/automationAccount_domainController.bicep' = {
     vnet: virtualNetwork.outputs.vnet
   }
 }
-module aaRef 'templates/testAaReference.bicep' = {
-  scope: resourceGroup
-  name: 'TestAutomationAccountReference'
-  params: {
-    aaName: automationAccountName
-  }
-}
 
 
 // module automationAccount 'templates/automationAccount.bicep' = {
