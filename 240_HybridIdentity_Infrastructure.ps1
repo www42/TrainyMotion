@@ -1,17 +1,20 @@
-# ---------------------------------------------------------------------------
-# Deployment OnPrem Domain Controller and Automation Account and Bastion Host
-# ---------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------
+# Deployment virtual network, bastion host, automation account, domain controller-vm, and more
+# --------------------------------------------------------------------------------------------
 $templateFile='HybridIdentity/main.bicep'
-$location = 'westeurope'
 $templateParams = @{
+    location = 'westeurope'
     resourceGroupName = 'OnPrem-RG'
-    location = $location
+    vnetName = 'OnPrem-VNet'
+    automationAccountName = 'Hybrid-AutomationAccount'
+    createAaJob = $false
     domainName = 'az.training'
     domainAdminName = 'DomainAdmin'
-    domainPassword = 'g1uxRMqczhhY'
-    vnetName = "OnPrem-VNet"
+    domainAdminPassword = 'Pa55w.rd1234'
+    # localAdminName = 'LocalAdmin'
+    # localAdminPassword = 'Pa55w.rd1234'
 }
-New-AzSubscriptionDeployment -Name 'HybridIdentity' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $location
+New-AzSubscriptionDeployment -Name 'HybridIdentity' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location
 
 
 
@@ -35,3 +38,4 @@ az deployment group create --name 'tabulaRasa' --resource-group $rgName --mode C
 
 # Delete resource group
 az group delete --resource-group $rgName --yes --no-wait
+Remove-AzResourceGroup -Name $templateParams.resourceGroupName -Force

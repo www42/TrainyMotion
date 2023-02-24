@@ -1,12 +1,19 @@
-param svrName string = 'SVR1'
-param svrIp string = '172.17.0.201'
+param location string = 'westeurope'
 
-var svrOsDiskName = '${svrName}-Disk'
-var svrComputerName = svrName
-var svrNicName = '${svrName}-Nic'
+param vmName string
+param vmSize string = 'Standard_D2s_v3'
+param vmIp string = '172.17.0.201'
+param vmAdminUserName string 
+@secure()
+param vmAdminPassword string
+param vmSubnetId string
+
+var vmOsDiskName = '${vmName}-Disk'
+var vmComputerName = vmName
+var vmNicName = '${vmName}-Nic'
 
 resource svr 'Microsoft.Compute/virtualMachines@2022-08-01' = {
-  name: svrName
+  name: vmName
   location: location
   properties: {
     hardwareProfile: {
@@ -20,13 +27,13 @@ resource svr 'Microsoft.Compute/virtualMachines@2022-08-01' = {
         version: 'latest'
       }
       osDisk: {
-        name: svrOsDiskName
+        name: vmOsDiskName
         caching: 'ReadWrite'
         createOption: 'FromImage'
       }
     }
     osProfile: {
-      computerName: svrComputerName
+      computerName: vmComputerName
       adminUsername: vmAdminUserName
       adminPassword: vmAdminPassword
       windowsConfiguration: {
@@ -38,6 +45,30 @@ resource svr 'Microsoft.Compute/virtualMachines@2022-08-01' = {
         {
           id: svrNic.id
         }
+      ]
+    }
+  }
+}
+
+resource svrNic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
+  name: vmNicName
+  location: location
+  properties: {
+    ipConfigurations: [
+      {
+        name: 'ipConfig1'
+        properties: {
+          privateIPAllocationMethod: 'Static'
+          privateIPAddress: vmIp
+          subnet: {
+            id: vmSubnetId
+          }
+        }
+      }
+    ]
+    dnsSettings: {
+      dnsServers: [
+        dcIp
       ]
     }
   }
@@ -70,29 +101,5 @@ resource svrExtension 'Microsoft.Compute/virtualMachines/extensions@2022-11-01' 
 }
 
 
-
-resource svrNic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
-  name: svrNicName
-  location: location
-  properties: {
-    ipConfigurations: [
-      {
-        name: 'ipConfig1'
-        properties: {
-          privateIPAllocationMethod: 'Static'
-          privateIPAddress: svrIp
-          subnet: {
-            id: vnet.properties.subnets[0].id
-          }
-        }
-      }
-    ]
-    dnsSettings: {
-      dnsServers: [
-        dcIp
-      ]
-    }
-  }
-}
 
 output svrId string = svr.id
