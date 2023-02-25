@@ -1,7 +1,8 @@
 //
 // Azure automation account
-// DSC module 'ActiveDirectoryDsc'
-// DSC configuration 'newForest'
+//    - DSC module 'ActiveDirectoryDsc'
+//    - DSC configuration 'newForest'
+//    - DSC compile job (newForest.ps1 --> mof)
 //
 param location string
 param aaName string 
@@ -27,11 +28,6 @@ resource aa 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
   }
 }
 resource aaModule 'Microsoft.Automation/automationAccounts/modules@2020-01-13-preview' = {
-  // name: '${aaName}/${aaModuleName}'
-  // Does not work 
-  //   "The Resource 'Microsoft.Automation/automationAccounts/DSC-pull'
-  //    under resource group 'Oauth-RG' was not found."
-
   name: '${aa.name}/${aaModuleName}'
   properties: {
     contentLink: {

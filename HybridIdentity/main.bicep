@@ -18,7 +18,6 @@ module virtualNetwork 'templates/virtualNetwork.bicep' = {
   }
 }
 module bastionHost 'templates/bastionHost.bicep' = {
-  scope: resourceGroup
   name: 'BastionHostDeployment'
   params: {
     location: location
@@ -26,9 +25,8 @@ module bastionHost 'templates/bastionHost.bicep' = {
     vnetName: virtualNetwork.outputs.vnetName
   }
 }
-module automationAccountDomainController 'templates/automationAccount_domainController.bicep' = {
-  scope: resourceGroup
-  name: 'automationAccountDomainControllerDeployment'
+module automationAccount 'templates/automationAccount.bicep' = {
+  name: 'automationAccountDeployment'
   params: {
     location: location
     aaName: automationAccountName
