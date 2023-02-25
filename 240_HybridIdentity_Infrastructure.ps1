@@ -14,15 +14,6 @@ $templateParams = @{
 }
 New-AzSubscriptionDeployment -Name 'HybridIdentity' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location
 
-$templateParams
-$templateParams['createAaJob'] = $false    
-$templateParams['domainAdminPassword'] = ''    
-
-# Automation account
-Get-AzAutomationRegistrationInfo `
-    -ResourceGroupName $templateParams.resourceGroupName `
-    -AutomationAccountName $templateParams.automationAccountName 
-
 
 
 # -------------------------------------------------------------------

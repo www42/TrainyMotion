@@ -1,21 +1,7 @@
 //
-// Azure automation account
-//     - DSC module 'ActiveDirectoryDsc'
-//     - DSC configuration 'newForest'
-//
 // Virtual machine with Windows Server configured as domain controller
 //
 param location string
-param aaName string 
-param aaModuleName string = 'ActiveDirectoryDsc'
-param aaModuleContentLink string = 'https://psg-prod-eastus.azureedge.net/packages/activedirectorydsc.6.0.1.nupkg'
-param aaConfigurationName string = 'newForest'
-param aaConfigurationSourceUri string = 'https://heidelberg.fra1.digitaloceanspaces.com/newForest.ps1'
-param createAaJob bool
-param domainName string
-param domainAdminName string
-@secure()
-param domainAdminPassword string
 param vmSize string = 'Standard_D2s_v3'
 param vmAdminUserName string
 @secure()
@@ -24,64 +10,12 @@ param vmName string = 'DC1'
 param vmIp string = '172.17.0.200'
 param vmNodeConfigurationName string = 'newForest.localhost'
 param vnet object
+param aaName string
 
-var aaJobName = '${aaConfigurationName}-Compile'
 var vmOsDiskName = '${vmName}-Disk'
 var vmComputerName = vmName
 var vmNicName = '${vmName}-Nic'
-var vmNsgName = '${vmName}-Nsg'
 
-resource aa 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
-  name: aaName
-  location: location
-  properties: {
-    sku: {
-      name: 'Free'
-    }
-  }
-}
-resource aaModule 'Microsoft.Automation/automationAccounts/modules@2020-01-13-preview' = {
-  // name: '${aaName}/${aaModuleName}'
-  // Does not work 
-  //   "The Resource 'Microsoft.Automation/automationAccounts/DSC-pull'
-  //    under resource group 'Oauth-RG' was not found."
-
-  name: '${aa.name}/${aaModuleName}'
-  properties: {
-    contentLink: {
-      uri: aaModuleContentLink
-    }
-  }
-}
-resource aaConfiguration 'Microsoft.Automation/automationAccounts/configurations@2019-06-01' = {
-  name: '${aa.name}/${aaConfigurationName}'
-  location: location
-  properties: {
-    source: {
-      type: 'uri'
-      value: aaConfigurationSourceUri
-    }
-    logProgress: true
-    logVerbose: true
-  }
-}
-resource aaJob 'Microsoft.Automation/automationAccounts/compilationjobs@2020-01-13-preview' = if (createAaJob) {
-  name: '${aa.name}/${aaJobName}'
-  dependsOn: [
-    aaModule
-    aaConfiguration
-  ]
-  properties: {
-    configuration: {
-      name: aaConfigurationName
-    }
-    parameters: {
-      DomainName: domainName
-      DomainAdminName: domainAdminName
-      DomainAdminPassword: domainAdminPassword      
-    }
-  }
-}
 resource dc 'Microsoft.Compute/virtualMachines@2020-06-01' = {
   name: vmName
   location: location
@@ -119,10 +53,6 @@ resource dc 'Microsoft.Compute/virtualMachines@2020-06-01' = {
     }
   }
 }
-resource dcNsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
-  name: vmNsgName
-  location: location
-}
 resource dcNic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
   name: vmNicName
   location: location
@@ -139,17 +69,14 @@ resource dcNic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
         }
       }
     ]
-    networkSecurityGroup: {
-      id: dcNsg.id
-    }
   }
+}
+resource aa 'Microsoft.Automation/automationAccounts@2022-08-08' existing = {
+  name: aaName
 }
 resource dcExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
   name: '${dc.name}/Dsc'
   location: location
-  dependsOn: [
-    aaJob
-  ]
   properties: {
     type: 'DSC'
     publisher: 'Microsoft.Powershell'
@@ -157,7 +84,7 @@ resource dcExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' =
     autoUpgradeMinorVersion: true
     protectedSettings: {
       Items: {
-        registrationKeyPrivate: listKeys(aaName, '2020-01-13-preview').keys[0].value
+        registrationKeyPrivate: aa.listKeys().keys[0].Value
       }
     }
     settings: {
@@ -172,7 +99,7 @@ resource dcExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' =
         }
         {
           Name: 'RegistrationUrl'
-          Value: reference(aaName, '2020-01-13-preview').registrationUrl
+          Value: aa.properties.RegistrationUrl
           TypeName: 'System.String'
         }
         {
@@ -200,7 +127,4 @@ resource dcExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' =
   }
 }
 
-output automationAccountId string = aa.id
-output automationAccountName string = aa.name
-output automationAccount object = aa
-output domainControllerId string = dc.id
+output dcId string = dc.id
