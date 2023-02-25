@@ -29,6 +29,7 @@ var aaJobName = '${aaConfigurationName}-Compile'
 var vmOsDiskName = '${vmName}-Disk'
 var vmComputerName = vmName
 var vmNicName = '${vmName}-Nic'
+var vmNsgName = '${vmName}-Nsg'
 
 resource aa 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
   name: aaName
@@ -118,6 +119,10 @@ resource dc 'Microsoft.Compute/virtualMachines@2020-06-01' = {
     }
   }
 }
+resource dcNsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
+  name: vmNsgName
+  location: location
+}
 resource dcNic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
   name: vmNicName
   location: location
@@ -134,6 +139,9 @@ resource dcNic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
         }
       }
     ]
+    networkSecurityGroup: {
+      id: dcNsg.id
+    }
   }
 }
 resource dcExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
@@ -192,6 +200,7 @@ resource dcExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' =
   }
 }
 
-output aaId string = aa.id
-output aaName string = aa.name
-output dcId string = dc.id
+output automationAccountId string = aa.id
+output automationAccountName string = aa.name
+output automationAccount object = aa
+output domainControllerId string = dc.id

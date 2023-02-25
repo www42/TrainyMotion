@@ -31,10 +31,9 @@ module bastionHost 'templates/bastionHost.bicep' = {
     vnetName: virtualNetwork.outputs.vnetName
   }
 }
-// Domain controller and automation account together in a singe template - works great
-module aaDc 'templates/automationAccount_domainController.bicep' = {
+module automationAccountDomainController 'templates/automationAccount_domainController.bicep' = {
   scope: resourceGroup
-  name: 'aaDcDeployment'
+  name: 'automationAccountDomainControllerDeployment'
   params: {
     location: location
     aaName: automationAccountName
