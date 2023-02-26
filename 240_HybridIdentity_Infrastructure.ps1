@@ -4,6 +4,7 @@
 $templateFile='HybridIdentity/main.bicep'
 $templateParams = @{
     location = 'westeurope'
+    resourceGroupName = 'OnPrem-RG'
     vnetName = 'OnPrem-VNet'
     automationAccountName = 'Hybrid-AutomationAccount'
     createAaJob = $true
@@ -13,10 +14,7 @@ $templateParams = @{
 }
 $templateParams['createAaJob'] = $false
 
-$rgName = 'OnPrem-RG'
-New-AzResourceGroup -Name $rgName -Location $templateParams.location
-
-New-AzResourceGroupDeployment -Name 'HybridIdentity' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location -ResourceGroupName $rgName
+New-AzSubscriptionDeployment -Name 'HybridIdentity' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location -ResourceGroupName $templateParams.resourceGroupName
 
 
 # -------------------------------------------------------------------
@@ -24,6 +22,8 @@ New-AzResourceGroupDeployment -Name 'HybridIdentity' -TemplateFile $templateFile
 # -------------------------------------------------------------------
 Get-AzContext | Format-List *
 Get-AzResourceGroup | ft ResourceGroupName,Location,ProvisioningState
+Get-AzSubscriptionDeployment
+$rgName = $templateParams.resourceGroupName
 Get-AzResourceGroupDeployment -ResourceGroupName $rgName | Sort-Object Timestamp | ft DeploymentName,ProvisioningState
 Get-AzResource -ResourceGroupName $rgName | Sort-Object ResourceType | Format-Table Name,ResourceType,Location
 New-AzResourceGroupDeployment -Name 'tabulaRasa' -ResourceGroupName $rgName -Mode Complete -Force -TemplateUri 'https://raw.githubusercontent.com/www42/arm/master/templates/empty.json' -AsJob

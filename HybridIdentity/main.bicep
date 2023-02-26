@@ -1,7 +1,8 @@
 // implicit target scope resouceGroup
-// targetScope = 'resourceGroup'
+targetScope = 'subscription'
 
 param location string 
+param resourceGroupName string
 param vnetName string
 param automationAccountName string
 param createAaJob bool
@@ -10,7 +11,12 @@ param domainAdminName string
 @secure()
 param domainAdminPassword string
 
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
+  name: resourceGroupName
+  location: location
+}
 module virtualNetwork 'templates/virtualNetwork.bicep' = {
+  scope: resourceGroup
   name: 'VirtualNetworkDeployment'
   params: {
     location: location 
@@ -18,6 +24,7 @@ module virtualNetwork 'templates/virtualNetwork.bicep' = {
   }
 }
 module bastionHost 'templates/bastionHost.bicep' = {
+  scope: resourceGroup
   name: 'BastionHostDeployment'
   params: {
     location: location
@@ -26,6 +33,7 @@ module bastionHost 'templates/bastionHost.bicep' = {
   }
 }
 module automationAccount 'templates/automationAccount.bicep' = {
+  scope: resourceGroup
   name: 'automationAccountDeployment'
   params: {
     location: location
@@ -37,6 +45,7 @@ module automationAccount 'templates/automationAccount.bicep' = {
   }
 }
 module domainController 'templates/domainController.bicep' = {
+  scope: resourceGroup
   name: 'domainControllerDeployment'
   params: {
     location: location
