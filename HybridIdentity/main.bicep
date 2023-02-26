@@ -51,7 +51,6 @@ module domainController 'templates/domainController.bicep' = {
     location: location
     // Getting 'aaName' from the output of 'automationAccountDeployment' creates a dependency.
     // Effectivly module 'domainController' depends on module 'automationAccount'. This is needed obviously.
-    // 
     aaName: automationAccount.outputs.aaName
     vmAdminUserName: domainAdminName
     vmAdminPassword: domainAdminPassword
