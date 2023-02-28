@@ -17,6 +17,7 @@ $templateParams = @{
 # DSC compile jobs (compilation .ps1 --> .mof) is not idempotent.
 # So for the first time create a compile job by 'createAaJob = $true'. In subsequent deployments say 'createAaJob = $false'
 $templateParams['createAaJob'] = $false
+$templateParams['domainAdminPassword'] = ''
 
 
 New-AzSubscriptionDeployment -Name 'HybridIdentity' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location -ResourceGroupName $templateParams.resourceGroupName

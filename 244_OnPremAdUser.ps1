@@ -1,15 +1,18 @@
 # Create OnPrem AD Users
 # ----------------------
 Import-Module -Name activedirectory
-Get-ADComputer -Filter *
-New-ADOrganizationalUnit -Name Production
+$Domain = Get-ADDomain | % forest
+$OU = New-ADOrganizationalUnit -Name 'Theoretical Physics' -PassThru
 $SecurePW = ConvertTo-SecureString -String 'Pa55w.rd1234' -AsPlainText -Force
+$Names = @(
+    'Max Planck'
+    'Willy Wien'
+    'Ludwig Boltzmann'
+)
+foreach ($Name in $Names) {
+    New-ADUser -AccountPassword $SecurePW -UserPrincipalName "$($Name.Replace(' ','.'))@$Domain" -Name $Name -PasswordNeverExpires $true -Path $OU.DistinguishedName -Enabled $true
+} 
 
-for ($i = 1; $i -le 9; $i++)
-{
-    $Name = "Prod$i"
-    New-ADUser -AccountPassword $SecurePW -UserPrincipalName "$Name@trainymotion.com" -Name $Name -PasswordNeverExpires $true -Path 'OU=Production,DC=trainymotion,DC=com' -Enabled $true
-}
 
 
 # Manage Sync
