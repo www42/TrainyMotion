@@ -26,10 +26,22 @@ Get-AzureADTenantDetail | Format-List DisplayName, `
     @{n="VerifiedDomains";e={$_.VerifiedDomains.Name}} 
 
 
+# ---------------------------------------------
+# MSOnline Login  (Windows PowerShell 5.1 only)
+# ---------------------------------------------
+Connect-MsolService
+
+
+
+
 
 # ----------------------------------------------------------
 # Microsoft.Graph Login
 # ----------------------------------------------------------
+Get-MgProfile
+Select-MgProfile -Name v1.0
+
+# Minimal scopes (permissions)
 Connect-MgGraph
 
 Get-MgContext

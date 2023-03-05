@@ -90,6 +90,14 @@ Get-Module    -Name AzureAD -ListAvailable
 Find-Module   -Name AzureAD -Repository PSGallery
 
 
+# ----------------------------------------------------------------------------------------------------------
+# Microsoft Azure Active Directory Module for Windows PowerShell (Module MSOnline) - planned for deprecation
+# ----------------------------------------------------------------------------------------------------------
+Get-Module -Name MSOnline -ListAvailable
+Find-Module -Name MSOnline -Repository PSGallery
+
+
+
 
 
 
