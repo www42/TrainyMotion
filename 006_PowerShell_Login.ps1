@@ -29,6 +29,7 @@ Get-AzureADTenantDetail | Format-List DisplayName, `
 # ---------------------------------------------
 # MSOnline Login  (Windows PowerShell 5.1 only)
 # ---------------------------------------------
+Import-Module -Name MSOnline
 Connect-MsolService
 
 

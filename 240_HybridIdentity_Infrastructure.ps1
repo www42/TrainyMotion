@@ -3,6 +3,9 @@
 # Deploys virtual network, bastion host, automation account, and domain controller vm
 # Domain controller vm represents on prem AD-DS
 # ------------------------------------------------------------------------------------
+
+# DSC compile jobs (compilation .ps1 --> .mof) is not idempotent.
+# So for the first time create a compile job by 'createAaJob = $true'. In subsequent deployments say 'createAaJob = $false'
 $templateFile='HybridIdentity/main.bicep'
 $templateParams = @{
     location = 'westeurope'
@@ -14,8 +17,6 @@ $templateParams = @{
     domainAdminName = 'DomainAdmin'
     domainAdminPassword = 'Pa55w.rd1234'
 }
-# DSC compile jobs (compilation .ps1 --> .mof) is not idempotent.
-# So for the first time create a compile job by 'createAaJob = $true'. In subsequent deployments say 'createAaJob = $false'
 $templateParams['createAaJob'] = $false
 $templateParams['domainAdminPassword'] = ''
 
