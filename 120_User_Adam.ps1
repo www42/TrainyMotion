@@ -15,6 +15,10 @@ $Scopes = @(
     "Directory.ReadWrite.All"
 )
 Connect-MgGraph -Scopes $Scopes
+# May be you have to specify tenant id
+$tenantId = '00a197a8-7b4d-4640-9689-01068da45596'
+Connect-MgGraph -Scopes $Scopes -TenantId $tenantID
+
 Get-MgContext | % Scopes
 
 # Create user

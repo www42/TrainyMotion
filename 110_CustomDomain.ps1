@@ -11,7 +11,7 @@ $Headers = @{Authorization = "sso-key $($ApiKey):$($ApiSecret)"}
 # GoDaddy - list all active domains
 (Invoke-RestMethod -Method GET -Uri $GoDaddy -Headers $Headers) | Where-Object status -EQ 'ACTIVE' | Format-Table domain,status,expires
 
-$Domain = 'contoso.training'
+$Domain = 'trainymotion.com'
 
 # GoDaddy - list all TXT records
 Invoke-RestMethod -Method GET -Headers $Headers -Uri "$GoDaddy/$Domain/records/TXT"

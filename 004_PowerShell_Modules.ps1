@@ -140,3 +140,13 @@ Install-Module -Name Microsoft.Graph -Repository PSGallery -Scope AllUsers -Forc
 Get-Module    -Name MSAL.PS -ListAvailable
 Find-Module   -Name MSAL.PS -Repository PSGallery
 Update-Module -Name MSAL.PS -Repository PSGallery -Scope AllUsers -Force
+
+
+
+# ------------------------------
+# Exchange Online PowerShell V3
+# ------------------------------
+Get-Module  -Name ExchangeOnlineManagement -ListAvailable 
+Find-Module -Name ExchangeOnlineManagement -Repository PSGallery
+
+Connect-ExchangeOnline

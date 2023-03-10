@@ -17,6 +17,10 @@ $TenantId     = Get-AzSubscription | Where-Object State -EQ 'enabled' | % Tenant
 Disconnect-AzureAD
 Connect-AzureAD
 
+# May be you nedd to specify tenant id
+$tenantId = '00a197a8-7b4d-4640-9689-01068da45596'
+Connect-AzureAD -TenantId $tenantId
+
 # If connecting with a federated Microsoft account (e.g. paul@outlook.com) you have to specify the Tenant Id
 # Connect-AzureAD -TenantId $TenantId
 
@@ -31,6 +35,14 @@ Get-AzureADTenantDetail | Format-List DisplayName, `
 # ---------------------------------------------
 Import-Module -Name MSOnline
 Connect-MsolService
+
+
+
+
+# ---------------
+# Exchange Online
+# ---------------
+Connect-ExchangeOnline
 
 
 
