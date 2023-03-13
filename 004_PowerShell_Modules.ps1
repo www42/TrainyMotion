@@ -148,5 +148,4 @@ Update-Module -Name MSAL.PS -Repository PSGallery -Scope AllUsers -Force
 # ------------------------------
 Get-Module  -Name ExchangeOnlineManagement -ListAvailable 
 Find-Module -Name ExchangeOnlineManagement -Repository PSGallery
-
-Connect-ExchangeOnline
+Find-Module -Name ExchangeOnlineManagement -Repository PSGallery -AllowPrerelease
