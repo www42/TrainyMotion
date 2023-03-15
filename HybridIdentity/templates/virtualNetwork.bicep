@@ -7,7 +7,7 @@ param vnetAddressSpace string = '172.17.0.0/16'
 param vnetSubnet0Name string = 'Subnet0'
 param vnetSubnet0AddressPrefix string = '172.17.0.0/24'
 param vnetSubnet1Name string = 'AzureBastionSubnet'
-param vnetSubnet1AddressPrefix string = '172.17.255.32/27'
+param vnetSubnet1AddressPrefix string = '172.17.255.64/26'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
   location: location

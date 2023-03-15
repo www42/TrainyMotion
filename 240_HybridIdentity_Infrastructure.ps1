@@ -1,22 +1,28 @@
 # ------------------------------------------------------------------------------------
 # Infrastruction for hybrid identity scenario
-# Deploys virtual network, bastion host, automation account, and domain controller vm
+# This deploys 
+#     * virtual network
+#     * bastion host
+#     * automation account
+#     * domain controller vm
 # Domain controller vm represents on prem AD-DS
 # ------------------------------------------------------------------------------------
 
 # DSC compile jobs (compilation .ps1 --> .mof) is not idempotent.
 # So for the first time create a compile job by 'createAaJob = $true'. In subsequent deployments say 'createAaJob = $false'
-$templateFile='HybridIdentity/main.bicep'
+$templateFile = 'HybridIdentity/main.bicep'
 $templateParams = @{
     location = 'westeurope'
-    resourceGroupName = 'OnPrem-RG'
-    vnetName = 'OnPrem-VNet'
+    resourceGroupName = 'RG-OnPremisesResourcen'
+    vnetName = 'VNet-OnPrem'
     automationAccountName = 'Hybrid-AutomationAccount'
     createAaJob = $true
-    domainName = 'az.training'
+    domainName = 'trainymotion.com'
     domainAdminName = 'DomainAdmin'
     domainAdminPassword = 'Pa55w.rd1234'
 }
+$templateParams['domainName'] = 'az.training'
+$templateParams['domainName'] = 'trainymotion.com'
 $templateParams['createAaJob'] = $false
 $templateParams['domainAdminPassword'] = ''
 
