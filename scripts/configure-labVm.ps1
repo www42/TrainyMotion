@@ -1,25 +1,5 @@
-param($sourceFileUrl = '', $destinationFolder = '')
-
-# "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('customScriptUriScriptFileName'), ' -sourceFileUrl ', parameters('studentFilesUrl'), ' -destinationFolder ', parameters('studentFilesDestination'))]"
-
 Start-Transcript 'C:\scriptlog.txt'
 $ErrorActionPreference = 'SilentlyContinue'
-
-if ([string]::IsNullOrEmpty($sourceFileUrl) -eq $false -and [string]::IsNullOrEmpty($destinationFolder) -eq $false) {
-    if (Test-Path $destinationFolder -eq $false){
-        Write-Output "Creating destination folder $destinationFolder"
-        New-Item -ItemType Directory -Path $destinationFolder
-    }
-    $splitPath = $sourceFileUrl.Split('/')
-    $fileName = $sourceFileUrl[$splitPath.Length-1]
-    $destinationPath = Join-Path $destinationFolder $fileName
-
-    Write-Output "Starting download: $sourceFileUrl to $destinationPath"
-    (New-Object Net.WebClient).DownloadFile($sourceFileUrl,$destinationPath)
-
-    Write-Output "Unzipping $destinationPath to $destinationFolder"
-    (new-object -com shell.application).namespace($destinationFolder).CopyHere((new-object -com shell.application).namespace($destinationPath).Items(),16)
-}
 
 # Disable IE ESC
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Value 0
@@ -82,4 +62,5 @@ Invoke-WebRequest -Uri $source -OutFile $destination
 $source = 'https://github.com/www42/TrainyMotion/raw/master/tools/WmiExplorer.exe'
 $destination = 'C:\temp\WmiExplorer.exe'
 Invoke-WebRequest -Uri $source -OutFile $destination
+
 Stop-Transcript
