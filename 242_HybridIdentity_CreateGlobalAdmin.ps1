@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------
-# Hybrid Identity
+# Scenario Hybrid Identity
 # ------------------------------------------------------------------------------------
 # This creates an Azure AD user 'AzureAdSyncAdmin' with role 'Global Administrator' 
 # for Azure AD Connect
@@ -14,7 +14,7 @@ $Domain = $Domains | Where-Object _Default -EQ $true | Select-Object -ExpandProp
 # $Domain = 'trainymotion.com'
 
 $PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
-$PasswordProfile.Password = 'xxxxxxxxxxxxxx'
+$PasswordProfile.Password = ''
 $PasswordProfile.ForceChangePasswordNextLogin = $false
 
 $Params = @{
@@ -31,5 +31,3 @@ $SyncUser = New-AzureADUser @Params
 $GlobalAdministrator = Get-AzureADDirectoryRole | Where-Object DisplayName -eq 'Global Administrator'
 Add-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId -RefObjectId $SyncUser.ObjectId
 Get-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId
-
-# Remove-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId -MemberId $SyncUser.ObjectId
