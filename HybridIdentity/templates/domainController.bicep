@@ -17,6 +17,10 @@ var vmComputerName = vmName
 var vmNicName = '${vmName}-Nic'
 var vmNsgName = '${vmName}-Nsg'
 
+var customScriptName = 'configure-labVm.ps1'
+var customScriptUri = 'https://raw.githubusercontent.com/www42/TrainyMotion/master/scripts/${customScriptName}'
+
+
 resource dc 'Microsoft.Compute/virtualMachines@2020-06-01' = {
   name: vmName
   location: location
@@ -82,8 +86,9 @@ resource dcNsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
 resource aa 'Microsoft.Automation/automationAccounts@2022-08-08' existing = {
   name: aaName
 }
-resource dcExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
-  name: '${dc.name}/Dsc'
+resource dscExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
+  parent: dc
+  name: 'Dsc'
   location: location
   properties: {
     type: 'DSC'
@@ -131,6 +136,23 @@ resource dcExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' =
           TypeName: 'System.String'
         }
       ]
+    }
+  }
+}
+resource scriptExtension 'Microsoft.Compute/virtualMachines/extensions@2022-11-01' = {
+  parent: dc
+  name: 'customScript'
+  location: location
+  properties: {
+    type: 'CustomScriptExtension'
+    publisher: 'Microsoft.Compute'
+    typeHandlerVersion: '1.10'
+    autoUpgradeMinorVersion: true
+    settings: {
+      fileUris: [
+        customScriptUri
+      ]
+      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File ${customScriptName}'
     }
   }
 }
