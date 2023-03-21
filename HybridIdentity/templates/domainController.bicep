@@ -90,6 +90,11 @@ resource dscExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' 
   parent: dc
   name: 'Dsc'
   location: location
+  // dscExtension results in a vm reboot which aborts script execution
+  // dscExtension must wait until scriptExtension is ready
+  dependsOn: [
+    scriptExtension
+  ]
   properties: {
     type: 'DSC'
     publisher: 'Microsoft.Powershell'

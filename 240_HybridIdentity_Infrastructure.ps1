@@ -36,9 +36,11 @@ New-AzSubscriptionDeployment -Name 'HybridIdentity' -TemplateFile $templateFile 
 Get-AzContext | Format-List *
 Get-AzResourceGroup | ft ResourceGroupName,Location,ProvisioningState
 Get-AzSubscriptionDeployment
+Get-AzSubscriptionDeployment | Sort-Object Timestamp | ft DeploymentName, ProvisioningState, Timestamp
 $rgName = $templateParams.resourceGroupName
-Get-AzResourceGroupDeployment -ResourceGroupName $rgName | Sort-Object Timestamp | ft DeploymentName,ProvisioningState
+Get-AzResourceGroupDeployment -ResourceGroupName $rgName | Sort-Object Timestamp | ft DeploymentName,ProvisioningState,Timestamp
 Get-AzResource -ResourceGroupName $rgName | Sort-Object ResourceType | Format-Table Name,ResourceType,Location
+
 New-AzResourceGroupDeployment -Name 'tabulaRasa' -ResourceGroupName $rgName -Mode Complete -Force -TemplateUri 'https://raw.githubusercontent.com/www42/arm/master/templates/empty.json' -AsJob
 Remove-AzResourceGroup -Name $rgName -Force -AsJob
 

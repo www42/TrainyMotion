@@ -34,7 +34,7 @@ module bastionHost 'templates/bastionHost.bicep' = {
 }
 module automationAccount 'templates/automationAccount.bicep' = {
   scope: resourceGroup
-  name: 'automationAccountDeployment'
+  name: 'AutomationAccountDeployment'
   params: {
     location: location
     aaName: automationAccountName
