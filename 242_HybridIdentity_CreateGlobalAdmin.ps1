@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------------------
 # Scenario Hybrid Identity
 # ------------------------------------------------------------------------------------
-# This creates an Azure AD user 'AzureAdSyncAdmin' with role 'Global Administrator' 
-# for Azure AD Connect
+# This script creates an Azure AD user 'AzureAdSyncAdmin' 
+# with role 'Global Administrator' for Azure AD Connect
 # ------------------------------------------------------------------------------------
 # Requires Windows Powershell 5.1 (wegen AzureAD)
 
