@@ -1,5 +1,6 @@
 # ------------------------------------------------------------------------------------
 # Hybrid Identity
+# ------------------------------------------------------------------------------------
 # This deploys infrastruction for hybrid identity scenario
 #     * virtual network
 #     * bastion host
