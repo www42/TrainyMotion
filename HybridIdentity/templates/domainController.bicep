@@ -86,8 +86,9 @@ resource dcNsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
 resource aa 'Microsoft.Automation/automationAccounts@2022-08-08' existing = {
   name: aaName
 }
-resource dcExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
-  name: '${dc.name}/Dsc'
+resource dscExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
+  parent: dc
+  name: 'Dsc'
   location: location
   properties: {
     type: 'DSC'
@@ -144,8 +145,8 @@ resource scriptExtension 'Microsoft.Compute/virtualMachines/extensions@2022-11-0
   location: location
   properties: {
     type: 'CustomScriptExtension'
-    publisher: 'Microsoft.Azure.Extensions'
-    typeHandlerVersion: '2.1'
+    publisher: 'Microsoft.Compute'
+    typeHandlerVersion: '1.10'
     autoUpgradeMinorVersion: true
     settings: {
       fileUris: [
