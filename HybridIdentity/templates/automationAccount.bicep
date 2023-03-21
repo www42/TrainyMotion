@@ -28,7 +28,8 @@ resource aa 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
   }
 }
 resource aaModule 'Microsoft.Automation/automationAccounts/modules@2020-01-13-preview' = {
-  name: '${aa.name}/${aaModuleName}'
+  parent: aa
+  name: aaModuleName
   properties: {
     contentLink: {
       uri: aaModuleContentLink
@@ -36,7 +37,8 @@ resource aaModule 'Microsoft.Automation/automationAccounts/modules@2020-01-13-pr
   }
 }
 resource aaConfiguration 'Microsoft.Automation/automationAccounts/configurations@2019-06-01' = {
-  name: '${aa.name}/${aaConfigurationName}'
+  parent: aa
+  name: aaConfigurationName
   location: location
   properties: {
     source: {
@@ -48,7 +50,8 @@ resource aaConfiguration 'Microsoft.Automation/automationAccounts/configurations
   }
 }
 resource aaJob 'Microsoft.Automation/automationAccounts/compilationjobs@2020-01-13-preview' = if (createAaJob) {
-  name: '${aa.name}/${aaJobName}'
+  parent: aa
+  name: aaJobName
   dependsOn: [
     aaModule
     aaConfiguration
