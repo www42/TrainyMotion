@@ -1,9 +1,11 @@
-# ---------------------------------------------------------------------
-# Adam Ries- Admin account with initial domain name - break glass user
+# ------------------------------------------------------------------------------------
+# Azure AD User
+# ------------------------------------------------------------------------------------
+# Adam Ries - Admin account with initial domain name - break glass user
 # (Don't use this user for daily work.)
-# ---------------------------------------------------------------------
 #    Adam --> Global Administrator --> Tenant
 #    Adam --> Owner                --> Subscription
+# ------------------------------------------------------------------------------------
 
 # Connect to Graph
 # ----------------

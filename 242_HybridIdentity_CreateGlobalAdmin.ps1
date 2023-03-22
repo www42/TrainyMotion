@@ -27,7 +27,9 @@ $Params = @{
 }
 $SyncUser = New-AzureADUser @Params
 
-# Tenant role Global Administrator
+# Add the user to the Global Administrator role
 $GlobalAdministrator = Get-AzureADDirectoryRole | Where-Object DisplayName -eq 'Global Administrator'
 Add-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId -RefObjectId $SyncUser.ObjectId
+
+# List all Global Administrators
 Get-AzureADDirectoryRoleMember -ObjectId $GlobalAdministrator.ObjectId

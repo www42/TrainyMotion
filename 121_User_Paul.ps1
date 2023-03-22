@@ -1,9 +1,11 @@
-# ---------------------------------------------------
+# ------------------------------------------------------------------------------------
+# Azure AD User
+# ------------------------------------------------------------------------------------
 # Paul Drude - Admin account with custom domain name
 # (Use this user for daily  work.)
-# ---------------------------------------------------
-# Paul --> Global Administrator --> Tenant
-# Paul --> Owner                --> Subscription
+#   Paul --> Global Administrator --> Tenant
+#   Paul --> Owner                --> Subscription
+# ------------------------------------------------------------------------------------
 
 # Connect to Graph
 # ----------------
