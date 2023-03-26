@@ -1,6 +1,6 @@
-# ----------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------
 # Azure PowerShell (Module Az)
-# ----------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------
 
 Get-Module  -Name Az -ListAvailable
 Find-Module -Name Az -Repository PSGallery
@@ -61,11 +61,25 @@ function Remove-OldAzModule {
 Remove-OldAzModule
 Install-Module -Name Az -Scope AllUsers -Force
 
+# Azure Login
+Logout-AzAccount
+Login-AzAccount
+
+Get-AzContext | Format-List Name,Account,Tenant,Subscription
+Get-AzSubscription
+$subscription = Get-AzSubscription | Where-Object State -EQ 'enabled' | % SubscriptionId
+$tenantId     = Get-AzSubscription | Where-Object State -EQ 'enabled' | % TenantId
 
 
-# ------------------------------------------------------------------------
+
+
+
+
+# ----------------------------------------------------------------------------------------------------------
 # Azure AD PowerShell for Graph (Module AzureAD) - planned for deprecation
-# ------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------
+# Windows PowerShell 5.1 only
+# ----------------------------------------------------------------------------------------------------------
 
 # Note:
 # 'Azure AD', 'Azure AD Preview' and 'MSOnline' PowerShell modules are planned for deprecation. 
@@ -89,21 +103,55 @@ Install-Module -Name Az -Scope AllUsers -Force
 Get-Module    -Name AzureAD -ListAvailable
 Find-Module   -Name AzureAD -Repository PSGallery
 
+Disconnect-AzureAD
+Connect-AzureAD
+
+# May be you need to specify tenant id (e.g. if you are connecting with a federated Microsoft account paul@outlook.com)
+$tenantId = '00a197a8-7b4d-4640-9689-01068da45596'
+Connect-AzureAD -TenantId $tenantId
+
+Get-AzureADTenantDetail | Format-List DisplayName, `
+    @{n="TenantId";e={$_.ObjectId}}, `
+    @{n="VerifiedDomains";e={$_.VerifiedDomains.Name}} 
+
+
+
+
 
 # ----------------------------------------------------------------------------------------------------------
 # Microsoft Azure Active Directory Module for Windows PowerShell (Module MSOnline) - planned for deprecation
 # ----------------------------------------------------------------------------------------------------------
+# Windows PowerShell 5.1 only
+# ----------------------------------------------------------------------------------------------------------
+
 Get-Module -Name MSOnline -ListAvailable
 Find-Module -Name MSOnline -Repository PSGallery
 
+Import-Module -Name MSOnline
+Connect-MsolService
+
+
+
+# ----------------------------------------------------------------------------------------------------------
+# Exchange Online PowerShell V3
+# ----------------------------------------------------------------------------------------------------------
+Get-Module  -Name ExchangeOnlineManagement -ListAvailable 
+Find-Module -Name ExchangeOnlineManagement -Repository PSGallery
+Find-Module -Name ExchangeOnlineManagement -Repository PSGallery -AllowPrerelease
+
+Disconnect-ExchangeOnline -Confirm:$false
+Connect-ExchangeOnline -ShowBanner:$false
 
 
 
 
 
-# ----------------------------------------------------------
+
+
+
+# ----------------------------------------------------------------------------------------------------------
 # Microsoft Graph PowerShell (Module Microsoft.Graph)
-# ----------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------
 Get-Module    -Name Microsoft.Graph -ListAvailable
 Find-Module   -Name Microsoft.Graph -Repository PSGallery
 
@@ -131,21 +179,28 @@ function Remove-OldGraphModule {
 Remove-OldGraphModule
 Install-Module -Name Microsoft.Graph -Repository PSGallery -Scope AllUsers -Force
 
+# Microsoft.Graph Login
+# ---------------------
+# Minimal scopes (permissions)
+Connect-MgGraph
+
+Get-MgContext
+Get-MgContext | % Scopes
+
+# Scopes (= permissions) can be added cumulatively
+$Scopes = @(
+    "User.Read.All"
+    "Group.Read.All"
+)
+Connect-MgGraph -Scopes $Scopes
+Disconnect-MgGraph
 
 
 
-# ----------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------
 # MSAL.PS
-# ----------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------
 Get-Module    -Name MSAL.PS -ListAvailable
 Find-Module   -Name MSAL.PS -Repository PSGallery
 Update-Module -Name MSAL.PS -Repository PSGallery -Scope AllUsers -Force
-
-
-
-# ------------------------------
-# Exchange Online PowerShell V3
-# ------------------------------
-Get-Module  -Name ExchangeOnlineManagement -ListAvailable 
-Find-Module -Name ExchangeOnlineManagement -Repository PSGallery
-Find-Module -Name ExchangeOnlineManagement -Repository PSGallery -AllowPrerelease
