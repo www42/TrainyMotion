@@ -1,7 +1,8 @@
 # ----------------------------------------------------------------------------------------------------------
 # Azure PowerShell (Module Az)
 # ----------------------------------------------------------------------------------------------------------
-
+# Both Windows PowerShell 5.1 and PowerShell 7
+# ----------------------------------------------------------------------------------------------------------
 Get-Module  -Name Az -ListAvailable
 Find-Module -Name Az -Repository PSGallery
 
@@ -99,7 +100,6 @@ $tenantId     = Get-AzSubscription | Where-Object State -EQ 'enabled' | % Tenant
 #    Register-PackageSource -Name PoshTestGallery -Location https://www.poshtestgallery.com/api/v2/ -ProviderName PowerShellGet
 #    Find-Module -Name AzureAD.Standard.Preview -Repository PoshTestGallery -AllVersions
 
-
 Get-Module    -Name AzureAD -ListAvailable
 Find-Module   -Name AzureAD -Repository PSGallery
 
@@ -123,7 +123,6 @@ Get-AzureADTenantDetail | Format-List DisplayName, `
 # ----------------------------------------------------------------------------------------------------------
 # Windows PowerShell 5.1 only
 # ----------------------------------------------------------------------------------------------------------
-
 Get-Module -Name MSOnline -ListAvailable
 Find-Module -Name MSOnline -Repository PSGallery
 
@@ -133,16 +132,16 @@ Connect-MsolService
 
 
 # ----------------------------------------------------------------------------------------------------------
-# Exchange Online PowerShell V3
+# Exchange Online PowerShell V3 
+# ----------------------------------------------------------------------------------------------------------
+# Both Windows PowerShell 5.1 and PowerShell 7
 # ----------------------------------------------------------------------------------------------------------
 Get-Module  -Name ExchangeOnlineManagement -ListAvailable 
 Find-Module -Name ExchangeOnlineManagement -Repository PSGallery
-Find-Module -Name ExchangeOnlineManagement -Repository PSGallery -AllowPrerelease
+Find-Module -Name ExchangeOnlineManagement -Repository PSGallery -AllowPrerelease  # Powershell 7
 
 Disconnect-ExchangeOnline -Confirm:$false
 Connect-ExchangeOnline -ShowBanner:$false
-
-
 
 
 
