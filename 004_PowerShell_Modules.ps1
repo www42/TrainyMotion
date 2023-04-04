@@ -3,9 +3,6 @@
 # ----------------------------------------------------------------------------------------------------------
 # Both Windows PowerShell 5.1 and PowerShell 7
 # ----------------------------------------------------------------------------------------------------------
-Get-Module  -Name Az -ListAvailable
-Find-Module -Name Az -Repository PSGallery
-
 # Note:
 #    Get-Module  -Name Az -ListAvailable
 # does not work in Windows PowerShell 5.1. To display the installed version in 5.1 use PowerShell 7.
@@ -21,6 +18,10 @@ Find-Module -Name Az -Repository PSGallery
 #   MacOS: Bash -> sudo pwsh 
 #   Windows: Run as Administrator(Windows Terminal) -> PowerShell 7 
 #                                                   -> Windows PowerShell 5
+
+Get-Module  -Name Az -ListAvailable
+Find-Module -Name Az -Repository PSGallery
+
 function Remove-OldAzModule {
     #   a) Uninstall all dependent modules Az.*
     #   b) Uninstall module Az
