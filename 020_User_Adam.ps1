@@ -18,6 +18,7 @@ $Scopes = @(
 )
 # If connecting as a Microsoft account you have to specify tenant id
 $tenantId = ''
+Connect-MgGraph -Scopes $Scopes
 Connect-MgGraph -Scopes $Scopes -TenantId $tenantID
 
 Get-MgContext | % Scopes
@@ -76,6 +77,3 @@ $user = Get-MgUser | ? UserPrincipalName -EQ "Adam@$domainName"
 $SubscriptionId = (Get-AzSubscription).Id
 Remove-AzRoleAssignment -ObjectId $user.Id -Scope "/subscriptions/$SubscriptionId" -RoleDefinitionName 'Owner'
 Remove-MgUser -UserId $user.Id
-
-
-(Find-MgGraphCommand -Command Remove-MgUser).permissions

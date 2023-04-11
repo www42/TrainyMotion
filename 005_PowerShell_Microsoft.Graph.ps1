@@ -13,5 +13,6 @@ Find-MgGraphCommand -Uri "/users"
 Find-MgGraphCommand -Uri "/users"      -ApiVersion v1.0 -Method POST   | % Permissions
 Find-MgGraphCommand -Uri "/users/{id}" -ApiVersion v1.0 -Method DELETE | % Permissions
 
+(Find-MgGraphCommand -Command Remove-MgUser).permissions
 
 Disconnect-MgGraph
