@@ -14,9 +14,9 @@
 $templateFile = 'HybridIdentity/main.bicep'
 $templateParams = @{
     location = 'westeurope'
-    resourceGroupName = 'RG-OnPremisesResourcen'
-    vnetName = 'VNet-OnPrem'
-    automationAccountName = 'Hybrid-AutomationAccount'
+    resourceGroupName = 'RG-HybridIdentity'
+    vnetName = 'VNet-HybridIdentity'
+    automationAccountName = 'AutomationAccount-HybridIdentity'
     createAaJob = $true
     domainName = 'trainymotion.com'
     domainAdminName = 'DomainAdmin'
