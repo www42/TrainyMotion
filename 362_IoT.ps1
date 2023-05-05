@@ -1,3 +1,20 @@
+# Azure IoT Hub Extemsion for VS Code
+https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-toolkit
+
+# powershell
+
+# IoT Hubs
+az iot hub list --query "[].{name:name,resourcegroup:resourcegroup,sku:sku.name,location:location}" --output table 
+$iotHubName = "mxhub007"
+
+# Devices
+az iot hub device-identity list --hub-name $iotHubName --query "[].{deviceId:deviceId,connectionState:connectionState,authenticationType:authenticationType}" --output table
+
+
+
+
+
+
 
 # Storage Account - IAM - Storage Blob Data Reader
 azcopy login
