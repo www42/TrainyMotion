@@ -4,8 +4,8 @@ The template is copied from [here](https://github.com/az140mp/azure-quickstart-t
 
 # My Changes
 
+main.bicep
 ```bicep
 param _artifactsLocation string = deployment().properties.templateLink.uri
 param _artifactsLocation string = 'https://github.com/www42/TrainyMotion/tree/master/NestedVirtualization'
-param _artifactsLocation string = 'https://github.com/www42/TrainyMotion/tree/master/NestedVirtualization/dsc/dscinstallwindowsfeatures.zip'
 ```
