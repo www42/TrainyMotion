@@ -33,3 +33,27 @@ cmd.exe /c "netsh routing ip add persistentroute dest=$($NatSubnet.NetworkAddres
 cmd.exe /c "netsh routing ip add persistentroute dest=$($VirtualNetwork.NetworkAddress) mask=$($VirtualNetwork.SubnetMask) name=""$($NIC2IP.InterfaceAlias)"" nhop=$($HyperVSubnet.HostAddresses[0])"
 
 Get-Disk | Where-Object -Property PartitionStyle -EQ "RAW" | Initialize-Disk -PartitionStyle GPT -PassThru | New-Volume -FileSystem NTFS -AllocationUnitSize 65536 -DriveLetter F -FriendlyName "Hyper-V"
+
+# --- My supplement --------------------------------------
+
+# Set time zone
+Set-TimeZone -Id 'W. Europe Standard Time'
+
+# Create folders
+New-Item -ItemType Directory -Path F:\VMs
+New-Item -ItemType Directory -Path F:\VHDs
+
+# Disable IE Enhanced Security for Administrators
+$RegEntry = 'HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}'
+Set-ItemProperty -Path $RegEntry -Name 'IsInstalled' -Value 0
+Stop-Process -Name Explorer
+
+# Disable Try Windows Admin Center
+$RegEntry = 'HKLM:\SOFTWARE\Microsoft\ServerManager'
+New-ItemProperty -Path $RegEntry -Name 'DoNotPopWACConsoleAtSMLaunch' -Value 1 
+
+# Shortcut on Desktop to Eval Center workaround
+$wsShell = New-Object -ComObject WScript.Shell
+$shortcut = $wsShell.CreateShortcut("C:\Users\Default\Desktop\EvalCenter.lnk")
+$shortcut.TargetPath = "https://techcommunity.microsoft.com/t5/windows-11/accessing-trials-and-kits-for-windows-eval-center-workaround/m-p/3361125"
+$shortcut.Save()

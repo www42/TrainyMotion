@@ -52,19 +52,6 @@ Add-AzVirtualNetworkPeering -Name 'VNet2-to-VNet1' -VirtualNetwork $VNet2 -Remot
 
 Get-AzVirtualNetworkPeering -VirtualNetworkName $VNet1.Name -ResourceGroupName 'RG-HybridIdentity' | ft Name,PeeringState,AllowForwardedTraffic,AllowGatewayTransit
 Get-AzVirtualNetworkPeering -VirtualNetworkName $VNet2.Name -ResourceGroupName 'RG-NestedVirtualization' | ft Name,PeeringState,AllowForwardedTraffic,AllowGatewayTransit
-# -------------------------------------------------------------------
 
-# TODO HVHOST
-#   * "Do you want to allow your PC to be discoverable by othe PCs and devices on this network?"
-#   * "Try Windows Admin Center and Azure Arc today"
-#   * Server Manger > Notification "Configuration required for DirectAccess and VPN (RAS)"
-#   * Server Manger > Notification "Configuration required for DHCP Server"
-#   * Hyper-V Manager > Pin to Taskbar
-#   * Microsoft Edge > Pin to Taskbar
-#   * Link to Eval Center workaround
-#   * Disable IE enhanced security (why?)
-#   * Windows Explorer > Change folder and search options > Hide extensions for known file types > uncheck
-#   * Windows Explorer > Change folder and search options > Expand to open folder > check
-#   * F:\VHDs
-#   * F:\VMs
-#   * Nested VM > Hi there > What keyboard layout would you like to use? > US (sic!)
+Remove-AzVirtualNetworkPeering -Name 'VNet1-to-VNet2' -VirtualNetworkName $VNet1.Name -ResourceGroupName 'RG-HybridIdentity' -Force
+# -------------------------------------------------------------------
