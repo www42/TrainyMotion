@@ -42,6 +42,17 @@ New-AzResourceGroupDeployment -Name 'tabulaRasa' -ResourceGroupName $resourceGro
 Remove-AzResourceGroup -Name $resourceGroupName -Force -AsJob
 
 
+# -------------------------------------------------------------------
+# Peering HybridIdentity <--> NestedVirtualization
+#                  VNet1 <--> VNet2
+$VNet1 = Get-AzVirtualNetwork -Name 'VNet-HybridIdentity' -ResourceGroupName 'RG-HybridIdentity'
+$VNet2 = Get-AzVirtualNetwork -Name 'VNet-NestedVirtualization' -ResourceGroupName 'RG-NestedVirtualization'
+Add-AzVirtualNetworkPeering -Name 'VNet1-to-VNet2' -VirtualNetwork $VNet1 -RemoteVirtualNetworkId $VNet2.Id -AllowForwardedTraffic -AllowGatewayTransit
+Add-AzVirtualNetworkPeering -Name 'VNet2-to-VNet1' -VirtualNetwork $VNet2 -RemoteVirtualNetworkId $VNet1.Id -AllowForwardedTraffic -AllowGatewayTransit
+
+Get-AzVirtualNetworkPeering -VirtualNetworkName $VNet1.Name -ResourceGroupName 'RG-HybridIdentity' | ft Name,PeeringState,AllowForwardedTraffic,AllowGatewayTransit
+Get-AzVirtualNetworkPeering -VirtualNetworkName $VNet2.Name -ResourceGroupName 'RG-NestedVirtualization' | ft Name,PeeringState,AllowForwardedTraffic,AllowGatewayTransit
+# -------------------------------------------------------------------
 
 # TODO HVHOST
 #   * "Do you want to allow your PC to be discoverable by othe PCs and devices on this network?"
