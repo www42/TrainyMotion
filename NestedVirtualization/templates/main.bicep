@@ -93,7 +93,7 @@ var ghostedSubnetNSGName = '${ghostedSubnetName}NSG'
 var azureVMsSubnetNSGName = '${azureVMsSubnetName}NSG'
 var azureVMsSubnetUDRName = '${azureVMsSubnetName}UDR'
 var DSCInstallWindowsFeaturesUri = uri(_artifactsLocation, 'dsc/dscinstallwindowsfeatures.zip${_artifactsLocationSasToken}')
-var HVHostSetupScriptUri = uri(_artifactsLocation, 'hvhostsetup.ps1${_artifactsLocationSasToken}')
+var HVHostSetupScriptUri = uri(_artifactsLocation, 'scripts/hvhostsetup.ps1${_artifactsLocationSasToken}')
 
 resource publicIp 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   name: HostPublicIPAddressName
