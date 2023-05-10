@@ -2,13 +2,15 @@
 # Scenario Hybrid Identity
 # ------------------------------------------------------------------------------------
 # Disable AD synchronization to tenant = Disable Azure AD Connect
-# Run this script on the domain controller VM.
-# ---------------------------------------------------------------
+# Run this script 
+#   * on the domain controller VM with sync enabled - MSOnline module is installed already
+#   * on any Windows PowerShell 5.1 instance with module MSOnline installed
+# ------------------------------------------------------------------------------------
 
-# The only working tools is MSonline PowerShell module. Microsoft Graph does not work!? See below.
+# The only working tools is MSOnline PowerShell module. Microsoft Graph does not work!? See below.
 # https://learn.microsoft.com/en-us/microsoft-365/enterprise/turn-off-directory-synchronization
 
-# Requires Windows Powershell 5.1 (wegen MSOnline)
+# Requires Windows Powershell 5.1 (due to MSOnline)
 
 Import-Module -Name "C:\Program Files\Microsoft Azure Active Directory Connect\AADPowerShell\MSOnline.psd1"
 Connect-MsolService

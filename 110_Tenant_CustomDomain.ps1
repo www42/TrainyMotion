@@ -2,7 +2,7 @@
 # Tenant
 #    --> Add custom domain name
 # ----------------------------------
-# Requires Windows PowerShell 5.1  (wegen Module 'AzureAD')
+# Requires Windows PowerShell 5.1  (due to Module 'AzureAD')
 $PSVersionTable
 
 $domainName = 'trainymotion.com'
