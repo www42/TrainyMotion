@@ -15,7 +15,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: resourceGroupName
   location: location
 }
-module virtualNetwork 'templates/virtualNetwork.bicep' = {
+module virtualNetwork './virtualNetwork.bicep' = {
   scope: resourceGroup
   name: 'VirtualNetworkDeployment'
   params: {
@@ -23,7 +23,7 @@ module virtualNetwork 'templates/virtualNetwork.bicep' = {
     vnetName: vnetName
   }
 }
-module bastionHost 'templates/bastionHost.bicep' = {
+module bastionHost './bastionHost.bicep' = {
   scope: resourceGroup
   name: 'BastionHostDeployment'
   params: {
@@ -32,7 +32,7 @@ module bastionHost 'templates/bastionHost.bicep' = {
     vnetName: virtualNetwork.outputs.vnetName
   }
 }
-module automationAccount 'templates/automationAccount.bicep' = {
+module automationAccount './automationAccount.bicep' = {
   scope: resourceGroup
   name: 'AutomationAccountDeployment'
   params: {
@@ -44,7 +44,7 @@ module automationAccount 'templates/automationAccount.bicep' = {
     domainName: domainName
   }
 }
-module domainController 'templates/domainController.bicep' = {
+module domainController './domainController.bicep' = {
   scope: resourceGroup
   name: 'domainControllerDeployment'
   params: {

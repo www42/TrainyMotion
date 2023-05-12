@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------
-# Hybrid Identity
+# Scenario Hybrid Identity
 # ------------------------------------------------------------------------------------
 # This creates OnPrem AD users.
 # Run this script on the domain controller VM.

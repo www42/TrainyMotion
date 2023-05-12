@@ -6,6 +6,7 @@
 $PSVersionTable
 
 $domainName = 'trainymotion.com'
+$domainName = 'contoso.training'
 
 New-AzureADDomain -Name $domainName
 Get-AzureADDomain | Format-Table Name, IsVerified, IsDefault

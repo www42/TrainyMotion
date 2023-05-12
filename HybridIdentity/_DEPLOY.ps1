@@ -2,16 +2,16 @@
 # Scenario Hybrid Identity
 # ------------------------------------------------------------------------------------
 # This deploys infrastruction for hybrid identity scenario
-#     * virtual network
-#     * bastion host
-#     * automation account
-#     * domain controller vm
-# Domain controller vm represents on prem AD-DS
+#     * Domain controller VM representing on prem AD-DS
+#     * Automation Account
+#     * Virtual network
+#     * Bastion host
+# 
 # ------------------------------------------------------------------------------------
-
-# DSC compile jobs (compilation .ps1 --> .mof) is not idempotent.
+# DSC compile job (compilation .ps1 --> .mof) is not idempotent.
 # So for the first time create a compile job by 'createAaJob = $true'. In subsequent deployments say 'createAaJob = $false'
-$templateFile = 'HybridIdentity/main.bicep'
+
+$templateFile = 'templates/main.bicep'
 $templateParams = @{
     location = 'westeurope'
     resourceGroupName = 'RG-HybridIdentity'
@@ -22,7 +22,6 @@ $templateParams = @{
     domainAdminName = 'DomainAdmin'
     domainAdminPassword = 'Pa55w.rd1234'
 }
-$templateParams['domainName'] = 'az.training'
 $templateParams['domainName'] = 'trainymotion.com'
 $templateParams['createAaJob'] = $false
 $templateParams['domainAdminPassword'] = ''
