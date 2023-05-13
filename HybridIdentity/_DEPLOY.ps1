@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------------
 # Scenario Hybrid Identity
 # ------------------------------------------------------------------------------------
-# This deploys infrastruction for hybrid identity scenario
+# This deploys infrastructure for hybrid identity scenario
 #     * Domain controller VM representing on prem AD-DS
 #     * Automation Account
 #     * Virtual network

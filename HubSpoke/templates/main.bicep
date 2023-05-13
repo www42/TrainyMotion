@@ -10,7 +10,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: resourceGroupName
   location: location
 }
-module virtualNetwork 'templates/virtualNetwork.bicep' = {
+module virtualNetwork './virtualNetwork.bicep' = {
   scope: resourceGroup
   name: 'NetworkHubDeployment'
   params: {
@@ -18,7 +18,7 @@ module virtualNetwork 'templates/virtualNetwork.bicep' = {
     vnetName: vnetName
   }
 }
-module virtualGateway 'templates/virtualGateway.bicep' = {
+module virtualGateway './virtualGateway.bicep' = {
   scope: resourceGroup
   name: 'VirtualGatewayDeployment'
   params: {
