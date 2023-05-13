@@ -3,19 +3,22 @@
 # ------------------------------------------------------------------------------------
 # This deploys
 #    * Hub virtual network
-#    * Virtual gateway
+#    * Virtual gateway with certificate
+#    * VPN client Windows 11
 # ------------------------------------------------------------------------------------
 # Requires Windows PowerShell 5.1  (due to 'cert:')
 # ------------------------------------------------------------------------------------
 Login-AzAccount
 Get-AzContext | Format-List Name,Account,Tenant,Subscription
-
 az login
 az account show
-# ------------------------------------------------------------------------------------
+
+
+
 
 # ------------------------------------------------------------------------------------
 # DEPLOYMENT
+#
 $templateFile = 'templates/main.bicep'
 $templateParams = @{
     location = 'westeurope'
@@ -24,6 +27,7 @@ $templateParams = @{
     gatewayName = 'VPN-GW'
 }
 New-AzSubscriptionDeployment -Name 'NetworkHub' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location -ResourceGroupName $templateParams.resourceGroupName
+#
 # ------------------------------------------------------------------------------------
 
 
@@ -32,6 +36,7 @@ New-AzSubscriptionDeployment -Name 'NetworkHub' -TemplateFile $templateFile -Tem
 
 # Import Root Certificate (needed to create Client Certificate)
 # -------------------------------------------------------------------
+dir './RootCertificate.pfx'
 $pfxPassword = ''
 $password = ConvertTo-SecureString -String $PfxPassword -AsPlainText -Force
 $rootCertificate = Import-PfxCertificate -FilePath './RootCertificate.pfx' -CertStoreLocation 'Cert:\CurrentUser\My' -Exportable -Password $password
@@ -85,7 +90,7 @@ Test-NetConnection 10.0.0.4 -Traceroute
 # -------------------------------------------------------------------
 Remove-Item -Path $RootCertificate.PSPath
 Remove-Item -Path $ClientCertificate.PSPath
-
+dir Cert:/CurrentUser/My
 cmd.exe /C "start ms-settings:network-vpn"
 
 
@@ -93,7 +98,6 @@ cmd.exe /C "start ms-settings:network-vpn"
 # -------------------------------------------------------------------
 # Tests, useful commands, clean up
 # -------------------------------------------------------------------
-Get-AzContext | Format-List *
 Get-AzResourceGroup | ft ResourceGroupName,Location,ProvisioningState
 Get-AzSubscriptionDeployment
 Get-AzSubscriptionDeployment | Sort-Object Timestamp | ft DeploymentName, ProvisioningState, Timestamp
