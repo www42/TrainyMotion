@@ -17,24 +17,15 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
 }
 module virtualNetwork './virtualNetwork.bicep' = {
   scope: resourceGroup
-  name: 'VirtualNetworkDeployment'
+  name: 'VirtualNetwork-Deployment'
   params: {
     location: location 
     vnetName: vnetName
   }
 }
-module bastionHost './bastionHost.bicep' = {
-  scope: resourceGroup
-  name: 'BastionHostDeployment'
-  params: {
-    location: location
-    vnet: virtualNetwork.outputs.vnet
-    vnetName: virtualNetwork.outputs.vnetName
-  }
-}
 module automationAccount './automationAccount.bicep' = {
   scope: resourceGroup
-  name: 'AutomationAccountDeployment'
+  name: 'AutomationAccount-Deployment'
   params: {
     location: location
     aaName: automationAccountName
@@ -46,7 +37,7 @@ module automationAccount './automationAccount.bicep' = {
 }
 module domainController './domainController.bicep' = {
   scope: resourceGroup
-  name: 'domainControllerDeployment'
+  name: 'DomainController-Deployment'
   params: {
     location: location
     // Getting 'aaName' from the output of 'automationAccountDeployment' creates a dependency.

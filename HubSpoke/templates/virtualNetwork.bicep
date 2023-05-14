@@ -51,7 +51,6 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
   }
 }
 
-output hub object = vnet
 output hubName string = vnet.name
 output hubId string = vnet.id
 output hubBastionSubnetId string = vnet.properties.subnets[1].id

@@ -2,16 +2,20 @@
 // Bastion host basic sku for an existing vnet
 //
 param location string
-param vnet object
 param vnetName string
+param subnetId string
 
-var bastionName = '${vnetName}-Bastion'
-var bastionPipName = '${vnetName}-Bastion-Pip'
+var bastionName = 'bas-${vnetName}'
+var bastionPipName = 'pip-${bastionName}'
 
 resource bastion 'Microsoft.Network/bastionHosts@2022-07-01' = {
   location: location
   name: bastionName
+  sku: {
+    name: 'Standard'
+  }
   properties: {
+    enableShareableLink: true
     ipConfigurations: [
       {
         name: 'ipConfig1'
@@ -20,7 +24,7 @@ resource bastion 'Microsoft.Network/bastionHosts@2022-07-01' = {
             id: bastionPip.id
           }
           subnet: {
-            id: vnet.properties.subnets[1].id
+            id: subnetId
           }
         }
       }
@@ -38,4 +42,7 @@ resource bastionPip 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
   }
 }
 
-output bastionId string = bastion.id
+output bastionName string = bastion.name
+output bastionType string = bastion.sku.name
+output bastionSharebleLink bool = bastion.properties.enableShareableLink
+output pipBastion string = bastionPip.properties.ipAddress
