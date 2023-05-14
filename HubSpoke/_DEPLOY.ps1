@@ -3,15 +3,17 @@
 # ------------------------------------------------------------------------------------
 # This deploys
 #    * Hub virtual network
-#    * Virtual gateway with certificate
-#    * VPN client Windows 11
+#    * Bastion host
+#    * Optional: Virtual gateway 
+#                   with certificates
+#                   with VPN client Windows
 # ------------------------------------------------------------------------------------
 # Requires Windows PowerShell 5.1  (due to 'cert:')
 # ------------------------------------------------------------------------------------
 Login-AzAccount
 Get-AzContext | Format-List Name,Account,Tenant,Subscription
 az login
-az account show
+az account show --query "{name:name,user:user.name,tenant:tenantId,subscription:id}"
 
 
 
@@ -22,11 +24,14 @@ az account show
 $templateFile = 'templates/main.bicep'
 $templateParams = @{
     location = 'westeurope'
-    resourceGroupName = 'RG-HubNetwork'
-    vnetName = 'VNet-Hub'
-    gatewayName = 'VPN-GW'
+    resourceGroupName = 'rg-hub'
+    vnetName = 'vnet-hub'
+    gatewayDeploymentYesNo = $false
+    gatewayName = 'vgw-trainymotion'
 }
-New-AzSubscriptionDeployment -Name 'NetworkHub' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location -ResourceGroupName $templateParams.resourceGroupName
+$templateParams['gatewayDeploymentYesNo'] = $true
+
+New-AzSubscriptionDeployment -Name 'Hub-and-Spoke-Scenario' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location -ResourceGroupName $templateParams.resourceGroupName
 #
 # ------------------------------------------------------------------------------------
 

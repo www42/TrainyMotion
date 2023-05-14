@@ -9,7 +9,7 @@ param aaName string
 param aaModuleName string = 'ActiveDirectoryDsc'
 param aaModuleContentLink string = 'https://psg-prod-eastus.azureedge.net/packages/activedirectorydsc.6.0.1.nupkg'
 param aaConfigurationName string = 'newForest'
-param aaConfigurationSourceUri string = 'https://heidelberg.fra1.digitaloceanspaces.com/newForest.ps1'
+param aaConfigurationSourceUri string = 'https://heidelberg.fra1.digitaloceanspaces.com/HybridIdentity/newForest.ps1'
 param createAaJob bool
 param domainName string
 param domainAdminName string

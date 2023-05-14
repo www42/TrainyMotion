@@ -5,29 +5,41 @@
 #     * Domain controller VM representing on prem AD-DS
 #     * Automation Account
 #     * Virtual network
-#     * Bastion host
 # 
 # ------------------------------------------------------------------------------------
 # DSC compile job (compilation .ps1 --> .mof) is not idempotent.
 # So for the first time create a compile job by 'createAaJob = $true'. In subsequent deployments say 'createAaJob = $false'
+# ------------------------------------------------------------------------------------
+Login-AzAccount
+Get-AzContext | Format-List Name,Account,Tenant,Subscription
 
-$templateFile = 'templates/main.bicep'
+
+
+# ------------------------------------------------------------------------------------
+# DEPLOYMENT
+#
+$templateFile = 'HybridIdentity/templates/main.bicep'
 $templateParams = @{
     location = 'westeurope'
-    resourceGroupName = 'RG-HybridIdentity'
-    vnetName = 'VNet-HybridIdentity'
-    automationAccountName = 'AutomationAccount-HybridIdentity'
+    resourceGroupName = 'rg-hybrid'
+    vnetName = 'vnet-hybrid'
+    automationAccountName = 'aa-hybrid'
     createAaJob = $true
     domainName = 'trainymotion.com'
     domainAdminName = 'DomainAdmin'
     domainAdminPassword = 'Pa55w.rd1234'
 }
-$templateParams['domainName'] = 'trainymotion.com'
+$templateParams['domainName'] = 'az.training'
 $templateParams['createAaJob'] = $false
 $templateParams['domainAdminPassword'] = ''
 
+New-AzSubscriptionDeployment -Name 'Hybrid-Identity-Scenario' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location -ResourceGroupName $templateParams.resourceGroupName
+#
+# ------------------------------------------------------------------------------------
 
-New-AzSubscriptionDeployment -Name 'HybridIdentity' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location -ResourceGroupName $templateParams.resourceGroupName
+
+
+
 
 
 # -------------------------------------------------------------------

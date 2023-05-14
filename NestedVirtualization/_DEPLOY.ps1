@@ -2,23 +2,33 @@
 # Scenario Nested Virtualization
 # ------------------------------------------------------------------------------------
 # This deploys a Hyper-V host for nested virtualization scenario
+# ------------------------------------------------------------------------------------
+Login-AzAccount
+Get-AzContext | Format-List Name,Account,Tenant,Subscription
 
-# Resource group deployment
-$resourceGroupName = 'RG-NestedVirtualization'
-$location = 'westeurope'
-New-AzResourceGroup -Name $resourceGroupName -Location $location
 
-$templateFile = 'templates/main.bicep'
+
+
+# ------------------------------------------------------------------------------------
+# DEPLOYMENT
+#
+$templateFile = 'NestedVirtualization/templates/main.bicep'
 $templateParams = @{
-    virtualNetworkName = 'VNet-NestedVirtualization'
+    location = 'westeurope'
+    resourceGroupName = 'rg-nestedvirtualization'
+    virtualNetworkName = 'vnet-nestedvirtualization'
     _artifactsLocation = 'https://heidelberg.fra1.digitaloceanspaces.com/NestedVirtualization/'
     HostAdminUsername = 'LocalAdmin'
     HostAdminPassword = 'Pa55w.rd1234'
 }
 $templateParams['HostAdminPassword'] = ''
 
+New-AzSubscriptionDeployment -Name 'Nested-Virtualization-Scenario' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location -ResourceGroupName $templateParams.resourceGroupName
+#
+# ------------------------------------------------------------------------------------
 
-New-AzResourceGroupDeployment -Name 'HyperV-Host' -ResourceGroupName $resourceGroupName -TemplateFile $templateFile -TemplateParameterObject $templateParams 
+
+
 
 
 # Problem with artifacts location
