@@ -21,7 +21,7 @@ az account show --query "{name:name,user:user.name,tenant:tenantId,subscription:
 # ------------------------------------------------------------------------------------
 # DEPLOYMENT
 #
-$templateFile = 'templates/main.bicep'
+$templateFile = 'HubSpoke/templates/main.bicep'
 $templateParams = @{
     location = 'westeurope'
     resourceGroupName = 'rg-hub'
