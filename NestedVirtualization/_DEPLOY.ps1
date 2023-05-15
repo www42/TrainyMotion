@@ -15,11 +15,11 @@ Get-AzContext | Format-List Name,Account,Tenant,Subscription
 $templateFile = 'NestedVirtualization/templates/main.bicep'
 $templateParams = @{
     location = 'westeurope'
-    resourceGroupName = 'rg-nestedvirtualization'
-    virtualNetworkName = 'vnet-nestedvirtualization'
+    resourceGroupName = 'rg-nested'
+    virtualNetworkName = 'vnet-nested'
     _artifactsLocation = 'https://heidelberg.fra1.digitaloceanspaces.com/NestedVirtualization/'
     HostAdminUsername = 'LocalAdmin'
-    HostAdminPassword = 'Pa55w.rd1234'
+    HostAdminPassword = ''
 }
 $templateParams['HostAdminPassword'] = ''
 

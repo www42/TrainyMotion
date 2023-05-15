@@ -27,7 +27,7 @@ $templateParams = @{
     createAaJob = $true
     domainName = 'trainymotion.com'
     domainAdminName = 'DomainAdmin'
-    domainAdminPassword = 'Pa55w.rd1234'
+    domainAdminPassword = ''
 }
 $templateParams['domainName'] = 'az.training'
 $templateParams['createAaJob'] = $false
