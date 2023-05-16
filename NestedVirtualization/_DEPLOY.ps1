@@ -28,20 +28,16 @@ New-AzSubscriptionDeployment -Name 'Nested-Virtualization-Scenario' -TemplateFil
 # ------------------------------------------------------------------------------------
 
 
-
-
-
 # Problem with artifacts location
 # _artifactsLocation = 'https://github.com/www42/TrainyMotion/tree/master/NestedVirtualization'   # Error downloading https://github.com/www42/TrainyMotion/tree/master/dsc/dscinstallwindowsfeatures.zip after 17 attempts
 # _artifactsLocation = 'https://github.com/www42/TrainyMotion/tree/master/NestedVirtualization/'  # Error: The DSC Extension failed to execute: Error unpacking 'dscinstallwindowsfeatures.zip'; verify this is a valid ZIP package.
 #
-# Try https://raw.githubusercontent.com/www42/TrainyMotion/tree/master/NestedVirtualization/
+# Try    https://raw.githubusercontent.com/www42/TrainyMotion/tree/master/NestedVirtualization/
 
 
 # -------------------------------------------------------------------
 # Tests, useful commands, clean up
 # -------------------------------------------------------------------
-Get-AzContext | Format-List *
 Get-AzResourceGroup | ft ResourceGroupName,Location,ProvisioningState
 Get-AzSubscriptionDeployment
 Get-AzSubscriptionDeployment | Sort-Object Timestamp | ft DeploymentName, ProvisioningState, Timestamp
@@ -54,15 +50,39 @@ Remove-AzResourceGroup -Name $resourceGroupName -Force -AsJob
 
 
 # -------------------------------------------------------------------
-# Peering HybridIdentity <--> NestedVirtualization
-#                  VNet1 <--> VNet2
-$VNet1 = Get-AzVirtualNetwork -Name 'VNet-HybridIdentity' -ResourceGroupName 'RG-HybridIdentity'
-$VNet2 = Get-AzVirtualNetwork -Name 'VNet-NestedVirtualization' -ResourceGroupName 'RG-NestedVirtualization'
-Add-AzVirtualNetworkPeering -Name 'VNet1-to-VNet2' -VirtualNetwork $VNet1 -RemoteVirtualNetworkId $VNet2.Id -AllowForwardedTraffic -AllowGatewayTransit
-Add-AzVirtualNetworkPeering -Name 'VNet2-to-VNet1' -VirtualNetwork $VNet2 -RemoteVirtualNetworkId $VNet1.Id -AllowForwardedTraffic -AllowGatewayTransit
+# Peerings
+#
+$Hub    = Get-AzVirtualNetwork -Name 'vnet-hub'    -ResourceGroupName 'rg-hub'
+$Hybrid = Get-AzVirtualNetwork -Name 'vnet-hybrid' -ResourceGroupName 'rg-hybrid'
+$Nested = Get-AzVirtualNetwork -Name 'vnet-nested' -ResourceGroupName 'rg-nested'
 
-Get-AzVirtualNetworkPeering -VirtualNetworkName $VNet1.Name -ResourceGroupName 'RG-HybridIdentity' | ft Name,PeeringState,AllowForwardedTraffic,AllowGatewayTransit
-Get-AzVirtualNetworkPeering -VirtualNetworkName $VNet2.Name -ResourceGroupName 'RG-NestedVirtualization' | ft Name,PeeringState,AllowForwardedTraffic,AllowGatewayTransit
+# Hub <--> Hybrid
+Add-AzVirtualNetworkPeering -Name 'peer-hub-hybrid' -VirtualNetwork $Hub    -RemoteVirtualNetworkId $Hybrid.Id -AllowForwardedTraffic -AllowGatewayTransit
+Add-AzVirtualNetworkPeering -Name 'peer-hybrid-hub' -VirtualNetwork $Hybrid -RemoteVirtualNetworkId $Hub.Id    -AllowForwardedTraffic #-UseRemoteGateways
 
-Remove-AzVirtualNetworkPeering -Name 'VNet1-to-VNet2' -VirtualNetworkName $VNet1.Name -ResourceGroupName 'RG-HybridIdentity' -Force
+# Hub <--> Nested
+Add-AzVirtualNetworkPeering -Name 'peer-hub-nested' -VirtualNetwork $Hub    -RemoteVirtualNetworkId $Nested.Id -AllowForwardedTraffic -AllowGatewayTransit
+Add-AzVirtualNetworkPeering -Name 'peer-nested-hub' -VirtualNetwork $Nested -RemoteVirtualNetworkId $Hub.Id    -AllowForwardedTraffic #-UseRemoteGateways
+
+# Show
+Get-AzVirtualNetworkPeering -VirtualNetworkName $Hub.Name    -ResourceGroupName 'rg-hub'    | ft Name,PeeringState,AllowForwardedTraffic,AllowGatewayTransit,UseRemoteGateways
+Get-AzVirtualNetworkPeering -VirtualNetworkName $Hybrid.Name -ResourceGroupName 'rg-hybrid' | ft Name,PeeringState,AllowForwardedTraffic,AllowGatewayTransit,UseRemoteGateways
+Get-AzVirtualNetworkPeering -VirtualNetworkName $Nested.Name -ResourceGroupName 'rg-nested' | ft Name,PeeringState,AllowForwardedTraffic,AllowGatewayTransit,UseRemoteGateways
+
+# Set 'UseRemoteGateways'
+$HybridToHub = Get-AzVirtualNetworkPeering -VirtualNetworkName $Hybrid.Name -ResourceGroupName 'rg-hybrid'
+$HybridToHub.UseRemoteGateways = $true
+Set-AzVirtualNetworkPeering -VirtualNetworkPeering $HybridToHub
+
+$NestedToHub = Get-AzVirtualNetworkPeering -VirtualNetworkName $Nested.Name -ResourceGroupName 'rg-nested'
+$NestedToHub.UseRemoteGateways = $true
+Set-AzVirtualNetworkPeering -VirtualNetworkPeering $NestedToHub
+
+
+# Remove
+Remove-AzVirtualNetworkPeering -Name 'peer-hub-hybrid' -VirtualNetworkName $Hub.Name    -ResourceGroupName 'rg-hub'    -Force
+Remove-AzVirtualNetworkPeering -Name 'peer-hybrid-hub' -VirtualNetworkName $Hybrid.Name -ResourceGroupName 'rg-hybrid' -Force
+
+Remove-AzVirtualNetworkPeering -Name 'peer-hub-nested' -VirtualNetworkName $Hub.Name    -ResourceGroupName 'rg-hub'    -Force
+Remove-AzVirtualNetworkPeering -Name 'peer-nested-hub' -VirtualNetworkName $Nested.Name -ResourceGroupName 'rg-nested' -Force
 # -------------------------------------------------------------------
