@@ -7,7 +7,7 @@ param vmAdminUserName string
 @secure()
 param vmAdminPassword string
 param vmName string = 'DC1'
-param vmIp string = '172.17.0.200'
+param vmIp string = '10.1.0.200'
 param vmNodeConfigurationName string = 'newForest.localhost'
 param vnet object
 param aaName string

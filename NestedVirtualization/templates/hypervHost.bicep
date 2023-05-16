@@ -21,31 +21,31 @@ param HostAdminPassword string
 param HostPublicIPAddressName string = 'HVHOSTPIP'
 
 @description('Virtual Network Address Space')
-param virtualNetworkAddressPrefix string = '10.0.0.0/22'
+param virtualNetworkAddressPrefix string = '10.2.0.0/16'
 
 @description('NAT Subnet Name')
 param NATSubnetName string = 'NAT'
 
 @description('NAT Subnet Address Space')
-param NATSubnetPrefix string = '10.0.0.0/24'
+param NATSubnetPrefix string = '10.2.0.0/24'
 
 @description('Hyper-V Host Subnet Name')
 param hyperVSubnetName string = 'Hyper-V-LAN'
 
 @description('Hyper-V Host Subnet Address Space')
-param hyperVSubnetPrefix string = '10.0.1.0/24'
+param hyperVSubnetPrefix string = '10.2.1.0/24'
 
 @description('Ghosted Subnet Name')
 param ghostedSubnetName string = 'Ghosted'
 
 @description('Ghosted Subnet Address Space')
-param ghostedSubnetPrefix string = '10.0.2.0/24'
+param ghostedSubnetPrefix string = '10.2.2.0/24'
 
 @description('Azure VMs Subnet Name')
 param azureVMsSubnetName string = 'Azure-VMs'
 
 @description('Azure VMs Address Space')
-param azureVMsSubnetPrefix string = '10.0.3.0/24'
+param azureVMsSubnetPrefix string = '10.2.3.0/24'
 
 @description('Hyper-V Host Network Interface 1 Name, attached to NAT Subnet')
 param HostNetworkInterface1Name string = 'HVHOSTNIC1'
