@@ -1,7 +1,8 @@
 # Windows: Update in Terminal as administrator!
 # MacOS: sudo pwsh
 # ----------------------------------------------------------------------------------------------------------
-Install-Module -Name xv -Scope AllUsers -Force
+Install-Module -Name xv -Force -Scope AllUsers  # --> local
+Install-Module -Name xv -Force                  # --> OneDrive
 
 # --- Azure (5.1 and 7) ---------------------------------
 Get-Module  -Name Az -ListAvailable
