@@ -68,3 +68,6 @@ Get-AzAutomationDscNodeConfiguration -ResourceGroupName $rgName -AutomationAccou
 Get-AzAutomationDscNode -ResourceGroupName $rgName -AutomationAccountName $aaName
 
 
+# TODO
+# * DC's ip address is not related to it's subnet, instead it's hard coded (in domainController.bicep)
+# * DC's ip address is not set as DNS server address on vnet
