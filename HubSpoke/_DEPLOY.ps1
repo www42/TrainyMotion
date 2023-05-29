@@ -10,7 +10,7 @@
 # ------------------------------------------------------------------------------------
 # Requires Windows PowerShell 5.1  (due to 'cert:')
 # ------------------------------------------------------------------------------------
-Login-AzAccount
+Connect-AzAccount
 Get-AzContext | Format-List Name,Account,Tenant,Subscription
 az login
 az account show --query "{name:name,user:user.name,tenant:tenantId,subscription:id}"
@@ -48,10 +48,13 @@ New-AzSubscriptionDeployment -Name 'Hub-and-Spoke-Scenario' -TemplateFile $templ
 # -------------------------------------------------------------------
 Get-AzResourceGroup | ft ResourceGroupName,Location,ProvisioningState
 Get-AzSubscriptionDeployment
-Get-AzSubscriptionDeployment | Sort-Object Timestamp | ft DeploymentName, ProvisioningState, Timestamp
+Get-AzSubscriptionDeployment | Sort-Object Timestamp -Descending | ft DeploymentName, ProvisioningState, Timestamp
 $rgName = $templateParams.resourceGroupName
-Get-AzResourceGroupDeployment -ResourceGroupName $rgName | Sort-Object Timestamp | ft DeploymentName,ProvisioningState,Timestamp
+Get-AzResourceGroupDeployment -ResourceGroupName $rgName | Sort-Object Timestamp -Descending | ft DeploymentName,ProvisioningState,Timestamp
 Get-AzResource -ResourceGroupName $rgName | Sort-Object ResourceType | Format-Table Name,ResourceType,Location
 
 New-AzResourceGroupDeployment -Name 'tabulaRasa' -ResourceGroupName $rgName -Mode Complete -Force -TemplateUri 'https://raw.githubusercontent.com/www42/arm/master/templates/empty.json' -AsJob
 Remove-AzResourceGroup -Name $rgName -Force -AsJob
+
+$hubBastionSubnetId = Get-AzResourceGroupDeployment -Name 'Hub-Network-Deployment' -ResourceGroupName $rgName | % Outputs | % hubBastionSubnetId | % value
+$hubBastionSubnetId.split('Microsoft.Network/virtualNetworks/')[1]

@@ -16,7 +16,7 @@ Start-Process https://github.com/Azure-Samples/azure-files-samples/releases
 $folder = 'C:\temp\AzFilesHybrid'
 dir $folder -File | Unblock-File
 cd $folder
-Import-Module -Name AzFilesHybrid.psd1
+Import-Module -Name ./AzFilesHybrid.psd1
 
 Connect-AzAccount
 $subscriptionId = (Get-AzContext).Subscription.Id
