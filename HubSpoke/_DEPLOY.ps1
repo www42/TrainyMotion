@@ -8,8 +8,6 @@
 #                   with certificates
 #                   with VPN client Windows
 # ------------------------------------------------------------------------------------
-# Requires Windows PowerShell 5.1  (due to 'cert:')
-# ------------------------------------------------------------------------------------
 Connect-AzAccount
 Get-AzContext | Format-List Name,Account,Tenant,Subscription
 az login

@@ -8,6 +8,7 @@
 #   * root certificate is exported as '.\RootCertificate.pfx' to sign a client vpn certificate later
 # ------------------------------------------------------------------------------------
 # Requires Windows PowerShell 5.1  (due to 'cert:')
+# ------------------------------------------------------------------------------------
 
 $friendlyName = 'Trainymotion Root Certificate'
 $subject = 'cn=Trainymotion'
