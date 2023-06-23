@@ -10,8 +10,6 @@
 # ------------------------------------------------------------------------------------
 Connect-AzAccount
 Get-AzContext | Format-List Name,Account,Tenant,Subscription
-az login
-az account show --query "{name:name,user:user.name,tenant:tenantId,subscription:id}"
 
 
 
