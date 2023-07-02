@@ -55,17 +55,20 @@ Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnetName | fl Name,Subnet
 Get-AzVirtualNetworkSubnetConfig -VirtualNetwork (Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnetName) -Name 'default' | Tee-Object -Variable subnet| fl Name,AddressPrefix,NetworkSecurityGroup,RouteTable
 $subnet.Id
 
+$vmClientParams = @{
+    location = 'westeurope'
+    vmName = 'Client002'
+    vmAdminUserName = 'localadmin'
+    vmAdminPassword = ''
+    vmSubnetId = $subnet.Id
+}
+$vmClientParams['vmAdminPassword'] = ''
+
 New-AzResourceGroupDeployment `
     -Name 'WindowsClient-Deployment' `
     -ResourceGroupName $rgName `
     -TemplateFile 'HybridIdentity/templates/windowsClient.bicep' `
-    -TemplateParameterObject @{
-        location = 'westeurope';
-        vmName = 'Client001';
-        vmAdminUserName = 'localadmin'
-        vmAdminPassword = ''
-        vmSubnetId = $subnet.Id
-    }
+    -TemplateParameterObject $vmClientParams 
 
 
 
