@@ -12,6 +12,8 @@ var vmComputerName = vmName
 var vmNicName = '${vmName}-Nic'
 var vmNsgName = '${vmName}-Nsg'
 
+var customScriptName = 'Enable-CloudKerberosTicketRetrieval.ps1'
+var customScriptUri = 'https://raw.githubusercontent.com/www42/TrainyMotion/master/scripts/${customScriptName}'
 
 
 
@@ -63,6 +65,22 @@ resource vm 'Microsoft.Compute/virtualMachines@2023-03-01' = {
       typeHandlerVersion: '1.0'
       autoUpgradeMinorVersion: true
 
+    }
+  }
+  resource dscExtension 'extensions@2023-03-01' = {
+    name: 'customScript'
+    location: location
+    properties: {
+      type: 'CustomScriptExtension'
+      publisher: 'Microsoft.Compute'
+      typeHandlerVersion: '1.10'
+      autoUpgradeMinorVersion: true
+      settings: {
+        fileUris: [
+          customScriptUri
+        ]
+        commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File ${customScriptName}'  
+      }
     }
   }
 }
