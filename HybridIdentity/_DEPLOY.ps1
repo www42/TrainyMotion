@@ -52,7 +52,7 @@ Get-AzVirtualNetwork | % { $_.Subnets } | ft Name,AddressPrefix
 # $vnetName = $templateParams.vnetName
 $vnetName = 'vnet-hybrid'
 Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnetName | fl Name,Subnets
-Get-AzVirtualNetworkSubnetConfig -VirtualNetwork (Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnetName) -Name 'default' | Tee-Object -Variable subnet| fl Name,AddressPrefix,NetworkSecurityGroup,RouteTable
+Get-AzVirtualNetworkSubnetConfig -VirtualNetwork (Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnetName) -Name 'default' | Tee-Object -Variable subnet | fl Name,AddressPrefix,NetworkSecurityGroup,RouteTable
 $subnet.Id
 
 $vmClientParams = @{
@@ -63,6 +63,7 @@ $vmClientParams = @{
     vmSubnetId = $subnet.Id
 }
 $vmClientParams['vmAdminPassword'] = ''
+$vmClientParams['vmName'] = 'Client003'
 
 New-AzResourceGroupDeployment `
     -Name 'WindowsClient-Deployment' `
