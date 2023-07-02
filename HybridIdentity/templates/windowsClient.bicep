@@ -18,6 +18,9 @@ var vmNsgName = '${vmName}-Nsg'
 resource vm 'Microsoft.Compute/virtualMachines@2023-03-01' = {
   name: vmName
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     hardwareProfile: {
       vmSize: vmSize
@@ -49,6 +52,17 @@ resource vm 'Microsoft.Compute/virtualMachines@2023-03-01' = {
           id: vmNic.id
         }
       ]
+    }
+  }
+  resource aadLoginExtion 'extensions@2023-03-01' = {
+    name: 'AADLoginForWindows'
+    location: location
+    properties: {
+      publisher: 'Microsoft.Azure.ActiveDirectory'
+      type: 'AADLoginForWindows'
+      typeHandlerVersion: '1.0'
+      autoUpgradeMinorVersion: true
+
     }
   }
 }
