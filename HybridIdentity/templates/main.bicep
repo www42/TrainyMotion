@@ -10,6 +10,11 @@ param domainName string
 param domainAdminName string
 @secure()
 param domainAdminPassword string
+param dcName string 
+param clientName string
+param localAdminName string
+@secure()
+param localAdminPassword string
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: resourceGroupName
@@ -40,11 +45,23 @@ module domainController './domainController.bicep' = {
   name: 'DomainController-Deployment'
   params: {
     location: location
+    vmName: dcName
     // Getting 'aaName' from the output of 'automationAccountDeployment' creates a dependency.
     // Effectivly module 'domainController' depends on module 'automationAccount'. This is needed obviously.
     aaName: automationAccount.outputs.aaName
     vmAdminUserName: domainAdminName
     vmAdminPassword: domainAdminPassword
+    vnet: virtualNetwork.outputs.vnet
+  }
+}
+module clientVm './windowsClient.bicep' = {
+  scope: resourceGroup
+  name: 'Hybrid-ClientVM'
+  params: {
+    location: location
+    vmName: clientName
+    vmAdminPassword: localAdminPassword
+    vmAdminUserName: localAdminName
     vnet: virtualNetwork.outputs.vnet
   }
 }

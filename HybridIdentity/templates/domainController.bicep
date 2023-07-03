@@ -12,6 +12,11 @@ param vmNodeConfigurationName string = 'newForest.localhost'
 param vnet object
 param aaName string
 
+
+var vmImagePublisher = 'MicrosoftWindowsServer'
+var vmImageOffer = 'WindowsServer'
+var vmImageSku = '2022-datacenter-azure-edition'
+var vmImageVersion = 'latest'
 var vmOsDiskName = '${vmName}-Disk'
 var vmComputerName = vmName
 var vmNicName = '${vmName}-Nic'
@@ -30,10 +35,10 @@ resource dc 'Microsoft.Compute/virtualMachines@2020-06-01' = {
     }
     storageProfile: {
       imageReference: {
-        publisher: 'MicrosoftWindowsServer'
-        offer: 'WindowsServer'
-        sku: '2022-datacenter-azure-edition'
-        version: 'latest'
+        publisher: vmImagePublisher
+        offer: vmImageOffer
+        sku: vmImageSku
+        version: vmImageVersion
       }
       osDisk: {
         name: vmOsDiskName

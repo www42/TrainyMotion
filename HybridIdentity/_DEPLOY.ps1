@@ -22,19 +22,30 @@ $templateParams = @{
     automationAccountName = 'aa-hybrid'
     createAaJob = $true
     domainName = 'trainymotion.com'
+    dcName = 'DC1'
     domainAdminName = 'DomainAdmin'
     domainAdminPassword = ''
+    clientName = 'Client001'
+    localAdminName = 'localadmin'
+    localAdminPassword = ''
 }
 $templateParams['domainName'] = 'adatum.com'
 $templateParams['createAaJob'] = $false
 $templateParams['domainAdminPassword'] = ''
+$templateParams['clientName'] = 'Client005'
+$templateParams['localAdminPassword'] = ''
+
+# For later use
+$rgName = $templateParams.resourceGroupName
+$vnetName = $templateParams.vnetName
+$aaName = $templateParams.automationAccountName
+
 
 New-AzSubscriptionDeployment -Name 'Hybrid-Identity-Scenario' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location -ResourceGroupName $templateParams.resourceGroupName
 # ------------------------------------------------------------------------------------
 
 
 # Resource group
-$rgName = $templateParams.resourceGroupName
 Get-AzResourceGroup | Sort-Object ResourceGroupName | ft ResourceGroupName,Location,ProvisioningState
 Get-AzResource -ResourceGroupName $rgName | Sort-Object ResourceType | Format-Table Name,ResourceType,Location
 
@@ -49,34 +60,13 @@ Remove-AzResourceGroup -Name $rgName -Force -AsJob
 # Virtual network https://learn.microsoft.com/en-us/powershell/module/az.network/?view=azps-9.4.0#virtual-network
 Get-AzVirtualNetwork | ft Name,AddressSpace,Subnets
 Get-AzVirtualNetwork | % { $_.Subnets } | ft Name,AddressPrefix
-# $vnetName = $templateParams.vnetName
-$vnetName = 'vnet-hybrid'
 Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnetName | fl Name,Subnets
 Get-AzVirtualNetworkSubnetConfig -VirtualNetwork (Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnetName) -Name 'default' | Tee-Object -Variable subnet | fl Name,AddressPrefix,NetworkSecurityGroup,RouteTable
 $subnet.Id
 
-$vmClientParams = @{
-    location = 'westeurope'
-    vmName = 'Client002'
-    vmAdminUserName = 'localadmin'
-    vmAdminPassword = ''
-    vmSubnetId = $subnet.Id
-}
-$vmClientParams['vmAdminPassword'] = ''
-$vmClientParams['vmName'] = 'Client003'
-
-New-AzResourceGroupDeployment `
-    -Name 'WindowsClient-Deployment' `
-    -ResourceGroupName $rgName `
-    -TemplateFile 'HybridIdentity/templates/windowsClient.bicep' `
-    -TemplateParameterObject $vmClientParams 
-
-
-
 
 
 # Automation account https://learn.microsoft.com/en-us/powershell/module/az.automation/?view=azps-9.4.0#automation
-$aaName = $templateParams.automationAccountName
 Get-AzAutomationAccount -ResourceGroupName $rgName -Name $aaName | fl AutomationAccountName,Plan,State
 Get-AzAutomationRegistrationInfo -ResourceGroupName $rgName -AutomationAccountName $aaName | fl AutomationAccountName,PrimaryKey,SecondaryKey,Endpoint
 Get-AzAutomationDscConfiguration -ResourceGroupName $rgName -AutomationAccountName $aaName | fl AutomationAccountName,Name,State

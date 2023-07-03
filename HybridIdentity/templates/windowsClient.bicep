@@ -1,12 +1,21 @@
+//
+// Virtual machine with Windows 11 
+//    * VM is AzureAD joined due to the 'AADLoginForWindows' extension
+//    * VM is ready to get Kerberos tickets from AzureAD (registry setting)
+//
 param location string
-param vmName string = 'Client01'
+param vmName string
 param vmSize string = 'Standard_D2s_v3'
 param vmAdminUserName string
 @secure()
 param vmAdminPassword string
-param vmSubnetId string
+param vnet object
 
 
+var vmImagePublisher = 'MicrosoftWindowsDesktop'
+var vmImageOffer = 'windows-11'
+var vmImageSku = 'win11-22h2-ent'
+var vmImageVersion = 'latest'
 var vmOsDiskName = '${vmName}-Disk'
 var vmComputerName = vmName
 var vmNicName = '${vmName}-Nic'
@@ -29,10 +38,10 @@ resource vm 'Microsoft.Compute/virtualMachines@2023-03-01' = {
     }
     storageProfile: {
       imageReference: {
-        publisher: 'MicrosoftWindowsDesktop'
-        offer: 'windows-11'
-        sku: 'win11-22h2-ent'
-        version: 'latest'
+        publisher: vmImagePublisher
+        offer: vmImageOffer
+        sku: vmImageSku
+        version: vmImageVersion
       }
       osDisk: {
         name: vmOsDiskName
@@ -97,7 +106,7 @@ resource vmNic 'Microsoft.Network/networkInterfaces@2022-11-01' = {
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: vmSubnetId
+            id: vnet.properties.subnets[0].id
           }
         }
       }
