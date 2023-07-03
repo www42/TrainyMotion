@@ -32,7 +32,7 @@ $templateParams = @{
 $templateParams['domainName'] = 'adatum.com'
 $templateParams['createAaJob'] = $false
 $templateParams['domainAdminPassword'] = ''
-$templateParams['clientName'] = 'Client005'
+$templateParams['clientName'] = 'Client006'
 $templateParams['localAdminPassword'] = ''
 
 # For later use
