@@ -20,10 +20,10 @@ var vmOsDiskName = '${vmName}-Disk'
 var vmComputerName = vmName
 var vmNicName = '${vmName}-Nic'
 var vmNsgName = '${vmName}-Nsg'
+var vmPipName = '${vmName}-Pip'
 
 var customScriptName = 'Enable-CloudKerberosTicketRetrieval.ps1'
 var customScriptUri = 'https://raw.githubusercontent.com/www42/TrainyMotion/master/scripts/${customScriptName}'
-
 
 
 resource vm 'Microsoft.Compute/virtualMachines@2023-03-01' = {
@@ -108,6 +108,9 @@ resource vmNic 'Microsoft.Network/networkInterfaces@2022-11-01' = {
           subnet: {
             id: vnet.properties.subnets[0].id
           }
+          publicIPAddress: {
+             id: vmPip.id
+          }
         }
       }
     ]
@@ -116,4 +119,35 @@ resource vmNic 'Microsoft.Network/networkInterfaces@2022-11-01' = {
 resource vmNsg 'Microsoft.Network/networkSecurityGroups@2022-11-01' = {
   name: vmNsgName
   location: location
+  properties: {
+    securityRules: [
+      {
+        name: 'Allow-RDP-Inbound'
+        properties: {
+          direction: 'Inbound'
+          protocol: 'Tcp'
+          sourceAddressPrefix: '*'
+          sourcePortRange: '*'
+          destinationAddressPrefix: '*'
+          destinationPortRange: '3389'
+          access: 'Allow'
+          priority: 200
+        }
+      }
+    ]
+  }
 }
+resource vmPip 'Microsoft.Network/publicIPAddresses@2022-11-01' = {
+  name: vmPipName
+  location: location
+  sku: {
+    name: 'Basic'
+    tier: 'Regional'
+  }
+  properties: {
+    publicIPAddressVersion: 'IPv4'
+  }
+}
+
+output publicIp string = vmPip.properties.ipAddress
+output managedIdentity string = vm.identity.principalId
