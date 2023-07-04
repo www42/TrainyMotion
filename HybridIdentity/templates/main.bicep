@@ -12,9 +12,9 @@ param domainAdminName string
 param domainAdminPassword string
 param dcName string 
 param clientName string
-param clientAdminName string
+param localAdminName string
 @secure()
-param clientAdminPassword string
+param localAdminPassword string
 param clientVirtualMachineAdministratorLoginRoleAssigneeId string
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
@@ -61,8 +61,8 @@ module clientVm './windowsClient.bicep' = {
   params: {
     location: location
     vmName: clientName
-    vmAdminPassword: clientAdminPassword
-    vmAdminUserName: clientAdminName
+    vmAdminPassword: localAdminPassword
+    vmAdminUserName: localAdminName
     vnet: virtualNetwork.outputs.vnet
     roleAsigneeId: clientVirtualMachineAdministratorLoginRoleAssigneeId
   }
