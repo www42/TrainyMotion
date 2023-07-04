@@ -24,16 +24,19 @@ $templateParams = @{
     domainName = 'trainymotion.com'
     dcName = 'DC1'
     domainAdminName = 'DomainAdmin'
-    domainAdminPassword = ''
+    domainAdminPassword = ConvertTo-SecureString -AsPlainText -Force -String 'Pa55w.rd1234'
     clientName = 'Client001'
-    localAdminName = 'localadmin'
-    localAdminPassword = ''
+    clientAdminName = 'localadmin'
+    clientAdminPassword = ConvertTo-SecureString -AsPlainText -Force -String 'Pa55w.rd1234'
+    clientVirtualMachineAdministratorLoginRoleAssigneeId = (Get-AzADUser -UserPrincipalName Ludwig@M365x88845287.onmicrosoft.com).Id
 }
 $templateParams['domainName'] = 'adatum.com'
 $templateParams['createAaJob'] = $false
-$templateParams['domainAdminPassword'] = ''
-$templateParams['clientName'] = 'Client006'
-$templateParams['localAdminPassword'] = ''
+$templateParams['clientName'] = 'Client011'
+$templateParams['domainAdminPassword'] = ConvertTo-SecureString -AsPlainText -Force -String ''
+$templateParams['clientAdminPassword'] = ConvertTo-SecureString -AsPlainText -Force -String ''
+
+
 
 # For later use
 $rgName = $templateParams.resourceGroupName
@@ -41,8 +44,9 @@ $vnetName = $templateParams.vnetName
 $aaName = $templateParams.automationAccountName
 
 
+
 New-AzSubscriptionDeployment -Name 'Hybrid-Identity-Scenario' -TemplateFile $templateFile -TemplateParameterObject $templateParams -Location $templateParams.location -ResourceGroupName $templateParams.resourceGroupName
-# ------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 
 # Resource group

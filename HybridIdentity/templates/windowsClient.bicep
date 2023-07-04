@@ -1,7 +1,11 @@
 //
 // Virtual machine with Windows 11 
-//    * VM is AzureAD joined due to the 'AADLoginForWindows' extension
-//    * VM is ready to get Kerberos tickets from AzureAD (registry setting)
+//    * System managed identity
+//    * Extention 'AADLoginForWindows' for logon as a tenant user (Because of this extension vm is Azure AD joined device.)
+//    * Custom script extention
+//        to get Kerberos tickets from AzureAD during logon
+//        to disable NLA (Network Level Authentication) for RDP connection
+//    * Role assignment Ludwig Boltzmann --> Virtual Machine Administrator Login
 //
 param location string
 param vmName string
@@ -10,6 +14,7 @@ param vmAdminUserName string
 @secure()
 param vmAdminPassword string
 param vnet object
+param roleAsigneeId string
 
 
 var vmImagePublisher = 'MicrosoftWindowsDesktop'
@@ -21,6 +26,9 @@ var vmComputerName = vmName
 var vmNicName = '${vmName}-Nic'
 var vmNsgName = '${vmName}-Nsg'
 var vmPipName = '${vmName}-Pip'
+@description('role "Virtual Machine Administrator Login"')
+var roleId = '1c0163c0-47e6-4577-8991-ea5c82e286e4'
+
 
 var customScriptName = 'Enable-CloudKerberosTicketRetrieval.ps1'
 var customScriptUri = 'https://raw.githubusercontent.com/www42/TrainyMotion/master/scripts/${customScriptName}'
@@ -73,7 +81,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2023-03-01' = {
       type: 'AADLoginForWindows'
       typeHandlerVersion: '1.0'
       autoUpgradeMinorVersion: true
-
+      
     }
   }
   resource dscExtension 'extensions@2023-03-01' = {
@@ -109,7 +117,7 @@ resource vmNic 'Microsoft.Network/networkInterfaces@2022-11-01' = {
             id: vnet.properties.subnets[0].id
           }
           publicIPAddress: {
-             id: vmPip.id
+            id: vmPip.id
           }
         }
       }
@@ -148,6 +156,23 @@ resource vmPip 'Microsoft.Network/publicIPAddresses@2022-11-01' = {
     publicIPAddressVersion: 'IPv4'
   }
 }
+// Role assignment is strange
+// see    https://4bes.nl/2022/04/24/create-role-assignments-for-different-scopes-with-bicep/
+//        https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/scenarios-rbac
+resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  name: roleId
+  scope: resourceGroup()
+}
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(vm.id, roleId, roleAsigneeId)
+  scope: vm
+  properties: {
+    principalId: roleAsigneeId
+    principalType: 'User'
+    roleDefinitionId: roleDefinition.id
+  }
+}
 
-output publicIp string = vmPip.properties.ipAddress
 output managedIdentity string = vm.identity.principalId
+output roleDefinitionId string = roleDefinition.id
+// should be   '/providers/Microsoft.Authorization/roleDefinitions/1c0163c0-47e6-4577-8991-ea5c82e286e4'
