@@ -157,8 +157,8 @@ resource vmPip 'Microsoft.Network/publicIPAddresses@2022-11-01' = {
   }
 }
 // Role assignment is strange
-// see    https://4bes.nl/2022/04/24/create-role-assignments-for-different-scopes-with-bicep/
-//        https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/scenarios-rbac
+//     https://4bes.nl/2022/04/24/create-role-assignments-for-different-scopes-with-bicep/
+//     https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/scenarios-rbac
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
   name: roleId
   scope: resourceGroup()
@@ -175,4 +175,3 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 
 output managedIdentity string = vm.identity.principalId
 output roleDefinitionId string = roleDefinition.id
-// should be   '/providers/Microsoft.Authorization/roleDefinitions/1c0163c0-47e6-4577-8991-ea5c82e286e4'
