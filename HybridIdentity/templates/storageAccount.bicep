@@ -1,5 +1,4 @@
-param location string = 'westeurope'
-
+param location string
 var storageAccountName = 'hybridkrb${uniqueString(resourceGroup().id)}'
 var fileShareName = '${storageAccountName}/default/docs'
 

@@ -50,6 +50,9 @@ New-AzSubscriptionDeployment -Name 'Hybrid-Identity-Scenario' -TemplateFile $tem
 # -----------------------------------------------------------------------------
 
 
+# Storage Account
+New-AzResourceGroupDeployment -Name 'Test-StorageAccount' -ResourceGroupName $rgName -TemplateFile HybridIdentity\templates\storageAccount.bicep 
+
 # Resource group
 Get-AzResourceGroup | Sort-Object ResourceGroupName | ft ResourceGroupName,Location,ProvisioningState
 Get-AzResource -ResourceGroupName $rgName | Sort-Object ResourceType | Format-Table Name,ResourceType,Location

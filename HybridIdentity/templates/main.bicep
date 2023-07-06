@@ -67,3 +67,10 @@ module clientVm './windowsClient.bicep' = {
     roleAsigneeId: clientVirtualMachineAdministratorLoginRoleAssigneeId
   }
 }
+module storageAccount './storageAccount.bicep' = {
+  scope: resourceGroup
+  name: 'Hybrid-StorageAccount'
+  params: {
+    location: location
+  }
+}
