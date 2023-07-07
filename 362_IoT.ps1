@@ -1,4 +1,4 @@
-# Azure IoT Hub Extemsion for VS Code
+# Azure IoT Hub Extension for VS Code
 https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-toolkit
 
 # powershell
