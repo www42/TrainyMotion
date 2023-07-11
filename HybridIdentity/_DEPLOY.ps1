@@ -30,11 +30,20 @@ $templateParams = @{
     localAdminPassword = 'Pa55w.rd1234'
     clientVirtualMachineAdministratorLoginRoleAssigneeId = (Get-AzADUser -UserPrincipalName Ludwig@M365x88845287.onmicrosoft.com).Id
 }
-$templateParams['domainName'] = 'adatum.com'
 $templateParams['createAaJob'] = $false
 $templateParams['clientName'] = 'Client011'
 $templateParams['domainAdminPassword'] = ''
 $templateParams['localAdminPassword'] = ''
+
+# for az.training
+$templateParams['resourceGroupName'] = 'RG-HybridIdentity'
+$templateParams['vnetName'] = 'VNet-HybridIdentity'
+$templateParams['createAaJob'] = $false
+$templateParams['domainName'] = 'az.training'
+$templateParams['domainAdminPassword'] = ''
+$templateParams['localAdminPassword'] = ''
+$templateParams['clientVirtualMachineAdministratorLoginRoleAssigneeId'] = 'aa7ba3b2-ac91-42f5-a386-b7d5ed0db0c1'
+
 
 
 
