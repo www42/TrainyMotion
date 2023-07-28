@@ -1,4 +1,4 @@
-param subnetId string = '/subscriptions/fa366244-df54-48f8-83c2-e1739ef3c4f1/resourceGroups/RG-HybridIdentity/providers/Microsoft.Network/virtualNetworks/VNet-HybridIdentity/subnets/Subnet0'
+param subnetId string
 param automationAccountName string
 param createAaJob bool
 param domainName string
@@ -16,7 +16,7 @@ param location string
 
 
 module automationAccount './automationAccount.bicep' = {
-  name: 'AutomationAccount-Deployment'
+  name: 'Module-AutomationAccount'
   params: {
     location: location
     aaName: automationAccountName
@@ -27,7 +27,7 @@ module automationAccount './automationAccount.bicep' = {
   }
 }
 module domainController './domainController.bicep' = {
-  name: 'DomainController-Deployment'
+  name: 'Module-DomainController'
   params: {
     location: location
     vmName: dcName
@@ -41,7 +41,7 @@ module domainController './domainController.bicep' = {
   }
 }
 module clientVm './windowsClient.bicep' = {
-  name: 'ClientVM-Deployment'
+  name: 'Module-ClientVM'
   params: {
     location: location
     vmName: clientName
@@ -52,7 +52,7 @@ module clientVm './windowsClient.bicep' = {
   }
 }
 module storageAccount './storageAccount.bicep' = {
-  name: 'StorageAccount-Deployment'
+  name: 'Module-StorageAccount'
   params: {
     location: location
   }
