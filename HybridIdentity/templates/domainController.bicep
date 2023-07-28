@@ -7,10 +7,10 @@ param vmAdminUserName string
 @secure()
 param vmAdminPassword string
 param vmName string = 'DC1'
-param vmIp string = '10.1.0.200'
+param vmIp string 
 param vmNodeConfigurationName string = 'newForest.localhost'
-param vnet object
 param aaName string
+param subnetId string
 
 
 var vmImagePublisher = 'MicrosoftWindowsServer'
@@ -77,7 +77,7 @@ resource dcNic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
           privateIPAllocationMethod: 'Static'
           privateIPAddress: vmIp
           subnet: {
-            id: vnet.properties.subnets[0].id
+            id: subnetId
           }
         }
       }

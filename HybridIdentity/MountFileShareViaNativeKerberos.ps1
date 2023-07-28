@@ -3,7 +3,7 @@
 
 enablecredsspsupport:i:0
 authentication level:i:2
-username:s:Ludwig@trainymotion.com
+username:s:Ludwig@az.training
 
 # Connect to Client VM via RDP
 # Add AzureAD\ in front of username e.g. 
