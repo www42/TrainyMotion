@@ -13,7 +13,7 @@ param vmSize string = 'Standard_D2s_v3'
 param vmAdminUserName string
 @secure()
 param vmAdminPassword string
-param vnet object
+param subnetId string
 param roleAsigneeId string
 
 
@@ -114,7 +114,7 @@ resource vmNic 'Microsoft.Network/networkInterfaces@2022-11-01' = {
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: vnet.properties.subnets[0].id
+            id: subnetId
           }
           publicIPAddress: {
             id: vmPip.id
