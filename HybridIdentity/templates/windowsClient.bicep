@@ -34,6 +34,7 @@ var customScriptName = 'Enable-CloudKerberosTicketRetrieval.ps1'
 var customScriptUri = 'https://raw.githubusercontent.com/www42/TrainyMotion/master/scripts/${customScriptName}'
 
 
+
 resource vm 'Microsoft.Compute/virtualMachines@2023-03-01' = {
   name: vmName
   location: location

@@ -8,7 +8,6 @@ Install-Module -Name xv -Force                  # --> OneDrive
 # --- Azure (5.1 and 7) ---------------------------------
 Get-Module     -Name Az -ListAvailable
 Find-Module    -Name Az -Repository PSGallery
-Install-Module -Name Az -Force -Scope AllUsers  # --> local
 function Remove-OldAzModule {
     #   a) Uninstall all dependent modules Az.*
     #   b) Uninstall module Az
@@ -48,6 +47,7 @@ function Remove-OldAzModule {
     Uninstall-Module -Name Az -AllVersions
 }
 Remove-OldAzModule
+Install-Module -Name Az -Force -Scope AllUsers  # --> local
 
 
 # --- AzureAD (5.1 only) ---------------------------------

@@ -26,6 +26,7 @@ var customScriptName = 'configure-labVm.ps1'
 var customScriptUri = 'https://raw.githubusercontent.com/www42/TrainyMotion/master/scripts/${customScriptName}'
 
 
+
 resource dc 'Microsoft.Compute/virtualMachines@2020-06-01' = {
   name: vmName
   location: location
