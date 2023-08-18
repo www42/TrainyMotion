@@ -40,6 +40,7 @@ $domainName = 'az.training'
 $clientLoginUser = 'Ludwig@az.training'
 $clientName = 'Client003'
 $templateFile = 'HybridIdentity/templates/main.bicep'
+
 $templateParams = @{
     location              = $location
     automationAccountName = $aaName
@@ -74,7 +75,7 @@ New-AzVirtualNetwork -Name $vnetName -ResourceGroupName $rgName -Location $locat
 $vnet = Get-AzVirtualNetwork -Name $vnetName -ResourceGroupName $rgName
 $subnet = Get-AzVirtualNetworkSubnetConfig -VirtualNetwork $vnet -Name 'Subnet0'
 
-# Set Vnet's DNS server to DC
+# Set Vnet's DNS server to DC - dangerous, because it overwrites the default Azure DNS server
 # $vnet.DhcpOptions.DnsServers = $dcIp
 # $vnet | Set-AzVirtualNetwork
 

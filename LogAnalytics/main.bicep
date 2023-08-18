@@ -1,18 +1,10 @@
-targetScope = 'subscription'
+param logAnalyticsWorkspaceName string
+param location string
 
-param resourceGroupName string
-param location string = deployment().location
-
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: resourceGroupName
-  location: location
-}
-
-module LogAnalyticsWorkspace 'LogAnalyticsWorkspace.bicep' = {
-  name: 'LogAnalyticsWorkspaceDeployment'
-  scope: resourceGroup
+module LogAnalyticsWorkspace './LogAnalyticsWorkspace.bicep' = {
+  name: 'Module-LogAnalyticsWorkspace'
   params: {
-    logAnalyticsWorkspaceName: 'log-workspace1'
+    name: logAnalyticsWorkspaceName
     location: location
   }
 }

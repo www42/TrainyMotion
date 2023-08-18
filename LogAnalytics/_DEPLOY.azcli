@@ -1,0 +1,33 @@
+# --- Login --------------------------------------------------------------------------
+Login-AzAccount
+Get-AzContext | Format-List Name,Account,Tenant,Subscription
+
+# --- Parameters ---------------------------------------------------------------------
+$rgName = 'rg-hybrididentity'
+$location = 'westeurope'
+$templateFile = 'LogAnalytics/main.bicep'
+$logAnalyticsWorkspaceName = 'log-hybrididentity'
+
+$templateParams = @{
+    location = $location
+    logAnalyticsWorkspaceName = $logAnalyticsWorkspaceName
+}
+
+
+# --- Resource group -----------------------------------------------------------------
+New-AzResourceGroup -Name $rgName -Location $location
+
+Get-AzResourceGroup | Sort-Object ResourceGroupName | ft ResourceGroupName,Location,ProvisioningState
+Get-AzResource -ResourceGroupName $rgName | Sort-Object ResourceType | Format-Table Name,ResourceType,Location
+
+# New-AzResourceGroupDeployment -Name 'TabulaRasa' -ResourceGroupName $rgName -Mode Complete -Force -TemplateUri 'https://raw.githubusercontent.com/www42/arm/master/templates/empty.json' -AsJob
+# Remove-AzResourceGroup -Name $rgName -Force -AsJob
+
+
+
+# --- Log Analytics Workspace --------------------------------------------------------
+New-AzResourceGroupDeployment -Name 'Scenario-LogAnalytics' -TemplateFile $templateFile -ResourceGroupName $rgName -Location $location @templateParams 
+
+Get-AzResourceGroupDeployment -ResourceGroupName $rgName | Sort-Object Timestamp -Descending | ft DeploymentName,ProvisioningState,Timestamp
+
+Get-AzOperationalInsightsWorkspace -ResourceGroupName $rgName | Sort-Object Name | ft Name,Location,ProvisioningState,Sku
