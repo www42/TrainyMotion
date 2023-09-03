@@ -20,12 +20,7 @@ $globalAdministrator = Get-AzureADMSRoleDefinition -Filter "displayName eq 'Glob
 $user = Get-AzureADUser -Filter "userPrincipalName eq 'Wolfgang.Pauli@trainymotion.com'"
 $paul = Get-AzureADUser -Filter "userPrincipalName eq 'Paul@trainymotion.com'"
 
-# OData Filter
-$globalAdministrator.Id
-                                Get-AzureADMSRoleAssignment -Filter "roleDefinitionId eq '62e90394-69f5-4237-9190-012177145e10'" # Works
-                                Get-AzureADMSRoleAssignment -Filter "roleDefinitionId eq '$globalAdministrator.Id'"              # Does not work
-$foo = $globalAdministrator.Id; Get-AzureADMSRoleAssignment -Filter "roleDefinitionId eq '$foo'"                                 # Works
-                                Get-AzureADMSRoleAssignment -Filter "roleDefinitionId eq '$($globalAdministrator.Id)'"           # Works - magic!
+Get-AzureADMSRoleAssignment -Filter "roleDefinitionId eq '$($globalAdministrator.Id)'"
 
 New-AzureADMSRoleAssignment -RoleDefinitionId $role.Id -PrincipalId $user.ObjectId -DirectoryScopeId '/'
 
