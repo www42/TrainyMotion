@@ -1,8 +1,8 @@
 # Windows: Update in Terminal as administrator!
 # MacOS: sudo pwsh
 # ----------------------------------------------------------------------------------------------------------
-Install-Module -Name xv -Force -Scope AllUsers  # --> local
-Install-Module -Name xv -Force                  # --> OneDrive
+# Install-Module -Name xv -Force -Scope AllUsers   --> local C:
+# Install-Module -Name xv -Force                   --> OneDrive
 
 
 # --- Azure (5.1 and 7) ---------------------------------
@@ -47,13 +47,13 @@ function Remove-OldAzModule {
     Uninstall-Module -Name Az -AllVersions
 }
 Remove-OldAzModule
-Install-Module -Name Az -Force -Scope AllUsers -Repository PSGallery
+Install-Module -Name Az -Repository PSGallery -Scope AllUsers -Force
 
 
 # --- AzureAD (5.1 only) ---------------------------------
 Get-Module       -Name AzureAD -ListAvailable
 Find-Module      -Name AzureAD -Repository PSGallery
-Install-Module   -Name AzureAD -Force -Scope AllUsers
+Install-Module   -Name AzureAD -Repository PSGallery -Scope AllUsers -Force
 Uninstall-Module -Name AzureAD -RequiredVersion <old version>
 
 
