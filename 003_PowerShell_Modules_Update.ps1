@@ -47,7 +47,7 @@ function Remove-OldAzModule {
     Uninstall-Module -Name Az -AllVersions
 }
 Remove-OldAzModule
-Install-Module -Name Az -Force -Scope AllUsers  # --> local
+Install-Module -Name Az -Force -Scope AllUsers -Repository PSGallery
 
 
 # --- AzureAD (5.1 only) ---------------------------------
