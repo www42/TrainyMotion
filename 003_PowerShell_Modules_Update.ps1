@@ -60,3 +60,46 @@ Uninstall-Module -Name AzureAD -RequiredVersion <old version>
 # --- MSOnline (5.1 only) ---------------------------------
 Get-Module  -Name MSOnline -ListAvailable
 Find-Module -Name MSOnline -Repository PSGallery
+
+
+# --- Exchange Online (5.1 and 7) -------------------------
+Get-Module       -Name ExchangeOnlineManagement -ListAvailable 
+Find-Module      -Name ExchangeOnlineManagement -Repository PSGallery
+Find-Module      -Name ExchangeOnlineManagement -Repository PSGallery -AllowPrerelease  # Powershell 7
+Install-Module   -Name ExchangeOnlineManagement -Repository PSGallery -Scope AllUsers -Force
+Uninstall-Module -Name ExchangeOnlineManagement -RequiredVersion <old version>
+
+
+# --- Microsoft Graph (5.1 and 7) -------------------------
+Get-Module     -Name Microsoft.Graph -ListAvailable
+Find-Module    -Name Microsoft.Graph -Repository PSGallery
+function Remove-OldGraphModule {
+    # Remove all Graph modules except Microsoft.Graph.Authentication
+    $Modules = Get-Module Microsoft.Graph* -ListAvailable | Where {$_.Name -ne "Microsoft.Graph.Authentication"} | Select-Object Name -Unique
+    Foreach ($Module in $Modules) {
+        $ModuleName = $Module.Name
+        $Versions = Get-Module $ModuleName -ListAvailable
+        Foreach ($Version in $Versions) {
+            $ModuleVersion = $Version.Version
+            Write-Host "Uninstall-Module $ModuleName $ModuleVersion"
+            Uninstall-Module $ModuleName -RequiredVersion $ModuleVersion
+        }
+    }
+    # Remove Microsoft.Graph.Authentication
+    $ModuleName = "Microsoft.Graph.Authentication"
+    $Versions = Get-Module $ModuleName -ListAvailable
+    Foreach ($Version in $Versions) {
+        $ModuleVersion = $Version.Version
+        Write-Host "Uninstall-Module $ModuleName $ModuleVersion"
+        Uninstall-Module $ModuleName -RequiredVersion $ModuleVersion
+    }
+}
+Remove-OldGraphModule
+Install-Module -Name Microsoft.Graph -Repository PSGallery -Scope AllUsers -Force
+
+
+
+# --- MSAL.PS (7) -----------------------------------------
+Get-Module    -Name MSAL.PS -ListAvailable
+Find-Module   -Name MSAL.PS -Repository PSGallery
+Update-Module -Name MSAL.PS -Repository PSGallery -Scope AllUsers -Force
